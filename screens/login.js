@@ -66,7 +66,9 @@ const Login = ({navigation}) => {
             </View>
           </Stack>
         </FormControl>
-        <Text style={styles.textForgot}>Forgot your password? Reset now</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
+          <Text style={styles.textForgot}>Forgot your password? Reset now</Text>
+        </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate('Register')}>
           <Text style={styles.textSignUp}>Don’t have an account? Sign Up</Text>
         </TouchableOpacity>

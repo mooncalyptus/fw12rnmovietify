@@ -106,7 +106,10 @@ const Register = ({navigation}) => {
               </View>
               <View style={styles.textSignIn}>
                 <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-                  <Text>Already have account ? Sign In</Text>
+                  <Text>
+                    Already have account ?{' '}
+                    <Text style={styles.signIn}>Sign In</Text>
+                  </Text>
                 </TouchableOpacity>
               </View>
             </Stack>
@@ -136,9 +139,13 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   textSignIn: {
-    marginHorizontal: 40,
+    marginHorizontal: 50,
     marginTop: 15,
     marginBottom: 20,
+  },
+  signIn: {
+    textDecorationStyle: 'underline',
+    textDecorationStyleColor: 'red',
   },
 });
 
