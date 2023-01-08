@@ -59,13 +59,19 @@ const Home = ({navigation}) => {
 
           <ScrollView horizontal={true} style={{marginTop: 20}}>
             <View style={styles.imageSection}>
-              <Image source={require('../src/images/now-1.png')} />
+              <TouchableOpacity onPress={() => navigation.navigate('ViewAll')}>
+                <Image source={require('../src/images/now-1.png')} />
+              </TouchableOpacity>
             </View>
             <View style={styles.imageSection}>
-              <Image source={require('../src/images/now-2.png')} />
+              <TouchableOpacity onPress={() => navigation.navigate('ViewAll')}>
+                <Image source={require('../src/images/now-2.png')} />
+              </TouchableOpacity>
             </View>
             <View style={styles.imageSection}>
-              <Image source={require('../src/images/now-3.png')} />
+              <TouchableOpacity onPress={() => navigation.navigate('ViewAll')}>
+                <Image source={require('../src/images/now-3.png')} />
+              </TouchableOpacity>
             </View>
           </ScrollView>
         </View>
@@ -120,19 +126,25 @@ const Home = ({navigation}) => {
               <Image source={require('../src/images/upcoming-1.png')} />
               <Text>Black Widow</Text>
               <Text>Action, Adventure, Sci-Fi</Text>
-              <Button>Details</Button>
+              <Button onPress={() => navigation.navigate('ViewAll')}>
+                Details
+              </Button>
             </View>
             <View style={styles.upcomingImage}>
               <Image source={require('../src/images/upcoming-2.png')} />
               <Text>The Witches</Text>
               <Text>Adventure, Comedy, Family</Text>
-              <Button>Details</Button>
+              <Button onPress={() => navigation.navigate('ViewAll')}>
+                Details
+              </Button>
             </View>
             <View style={styles.upcomingImage}>
               <Image source={require('../src/images/upcoming-3.png')} />
               <Text>Tenet</Text>
               <Text>Action, Adventure, Sci-Fi</Text>
-              <Button>Details</Button>
+              <Button onPress={() => navigation.navigate('ViewAll')}>
+                Details
+              </Button>
             </View>
           </ScrollView>
         </View>

@@ -6,6 +6,7 @@ import Register from './screens/register';
 import ForgotPassword from './screens/forgotPassword';
 import SetPassword from './screens/setPassword';
 import ViewAll from './screens/viewAll';
+import MovieDetails from './screens/movieDetails';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
@@ -41,6 +42,11 @@ const App = () => {
               name="ViewAll"
               component={ViewAll}
               options={{title: 'View All Movies'}}
+            />
+            <Stack.Screen
+              name="MovieDetails"
+              component={MovieDetails}
+              options={{title: 'Movie Details'}}
             />
           </Stack.Navigator>
         </NavigationContainer>

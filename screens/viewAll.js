@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/Feather';
 import Navbar from '../src/components/navbar';
 import Footer from '../src/components/footer';
 
-const ViewAll = () => {
+const ViewAll = ({navigation}) => {
   return (
     <ScrollView>
       <View>
@@ -80,7 +80,11 @@ const ViewAll = () => {
                   Black Widow
                 </Text>
                 <Text>Action, Adventure, Sci-Fi</Text>
-                <Button style={{marginTop: 5}}>Details</Button>
+                <Button
+                  style={{marginTop: 5}}
+                  onPress={() => navigation.navigate('MovieDetails')}>
+                  Details
+                </Button>
               </View>
               <View style={styles.upcomingImage}>
                 <Image source={require('../src/images/upcoming-2.png')} />
@@ -88,7 +92,11 @@ const ViewAll = () => {
                   The Witches
                 </Text>
                 <Text>Adventure, Comedy, Family</Text>
-                <Button style={{marginTop: 5}}>Details</Button>
+                <Button
+                  style={{marginTop: 5}}
+                  onPress={() => navigation.navigate('MovieDetails')}>
+                  Details
+                </Button>
               </View>
             </View>
             <View style={{flexDirection: 'row'}}>
@@ -106,7 +114,11 @@ const ViewAll = () => {
                   The Witches
                 </Text>
                 <Text>Adventure, Comedy, Family</Text>
-                <Button style={{marginTop: 5}}>Details</Button>
+                <Button
+                  style={{marginTop: 5}}
+                  onPress={() => navigation.navigate('MovieDetails')}>
+                  Details
+                </Button>
               </View>
             </View>
             <View
