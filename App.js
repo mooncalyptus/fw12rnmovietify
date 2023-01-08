@@ -5,6 +5,7 @@ import Home from './screens/home';
 import Register from './screens/register';
 import ForgotPassword from './screens/forgotPassword';
 import SetPassword from './screens/setPassword';
+import ViewAll from './screens/viewAll';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
@@ -35,6 +36,11 @@ const App = () => {
               name="SetPassword"
               component={SetPassword}
               options={{title: 'Reset Password'}}
+            />
+            <Stack.Screen
+              name="ViewAll"
+              component={ViewAll}
+              options={{title: 'View All Movies'}}
             />
           </Stack.Navigator>
         </NavigationContainer>

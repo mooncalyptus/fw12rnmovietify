@@ -1,9 +1,16 @@
 import React from 'react';
-import {View, Text, Image, StyleSheet, ScrollView} from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native';
 import {Button, Input, FormControl} from 'native-base';
 import Icon from 'react-native-vector-icons/Feather';
 
-const Home = () => {
+const Home = ({navigation}) => {
   return (
     <ScrollView>
       <View>
@@ -45,7 +52,9 @@ const Home = () => {
           }}>
           <View style={styles.nowShowingText}>
             <Text style={styles.nowShowingFirst}>Now Showing</Text>
-            <Text>View All</Text>
+            <TouchableOpacity onPress={() => navigation.navigate('ViewAll')}>
+              <Text>View All</Text>
+            </TouchableOpacity>
           </View>
 
           <ScrollView horizontal={true} style={{marginTop: 20}}>
@@ -149,7 +158,13 @@ const Home = () => {
                 onPress={() => navigation.navigate('SetPassword')}>
                 Join Now
               </Button>
-              <Text style={{paddingRight: 15, paddingLeft: 5, marginTop: 15, paddingBottom: 20}}>
+              <Text
+                style={{
+                  paddingRight: 15,
+                  paddingLeft: 5,
+                  marginTop: 15,
+                  paddingBottom: 20,
+                }}>
                 By joining you as a movietify member, we will always send you
                 the latest updates via email .
               </Text>
