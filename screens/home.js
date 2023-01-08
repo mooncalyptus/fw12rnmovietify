@@ -130,8 +130,8 @@ const Home = () => {
         {/* Konten Upcoming end */}
 
         {/* Konten mails */}
-        <View style={{marginTop: 40}}>
-          <View>
+        <View style={styles.mailsContent}>
+          <View style={{paddingTop: 5}}>
             <Text style={{textAlign: 'center'}}>Be the vanguard of</Text>
             <Text style={{textAlign: 'center'}}>Moviegoers</Text>
           </View>
@@ -149,7 +149,7 @@ const Home = () => {
                 onPress={() => navigation.navigate('SetPassword')}>
                 Join Now
               </Button>
-              <Text style={{paddingRight: 15, paddingLeft: 5, marginTop: 15}}>
+              <Text style={{paddingRight: 15, paddingLeft: 5, marginTop: 15, paddingBottom: 20}}>
                 By joining you as a movietify member, we will always send you
                 the latest updates via email .
               </Text>
@@ -202,13 +202,13 @@ const Home = () => {
                   <Text>Follow Us</Text>
                 </View>
                 <View style={{flexDirection: 'row', marginTop: 15}}>
-                  <Icon name="facebook" size={25} />
-                  <Icon name="instagram" size={25} />
-                  <Icon name="twitter" size={25} />
+                  <Icon name="facebook" size={25} style={{marginRight: 10}} />
+                  <Icon name="instagram" size={25} style={{marginRight: 10}} />
+                  <Icon name="twitter" size={25} style={{marginRight: 10}} />
                   <Icon name="youtube" size={25} />
                 </View>
               </View>
-              <View>
+              <View style={{marginTop: 15}}>
                 <Text>&copy; 2023 movietify. All Rights Reserved.</Text>
               </View>
             </View>
@@ -280,6 +280,12 @@ const styles = StyleSheet.create({
     padding: 5,
     marginLeft: 10,
     marginTop: 10,
+  },
+  mailsContent: {
+    backgroundColor: '#F5F5F5',
+    marginTop: 40,
+    marginHorizontal: 10,
+    elevation: 10,
   },
 });
 export default Home;
