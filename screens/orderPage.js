@@ -12,7 +12,7 @@ import Navbar from '../src/components/navbar';
 import Footer from '../src/components/footer';
 import GridSeat from '../src/components/gridSeat';
 
-const OrderPage = () => {
+const OrderPage = ({navigation}) => {
     return (
         <ScrollView>
             <Navbar />
@@ -73,7 +73,11 @@ const OrderPage = () => {
                     </Box>
                 </Box>
                 <Box alignItems="center" my="50">
-                    <Button width="70%">Checkout Now</Button>
+                    <Button
+                        width="70%"
+                        onPress={() => navigation.navigate('PaymentPage')}>
+                        Checkout Now
+                    </Button>
                 </Box>
             </Box>
             <Footer />

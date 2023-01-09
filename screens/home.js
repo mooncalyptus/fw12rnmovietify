@@ -188,7 +188,9 @@ const Home = ({navigation}) => {
                             />
                             <Button
                                 style={{width: '90%', marginTop: 15}}
-                                onPress={() => navigation.navigate('TesForm')}>
+                                onPress={() =>
+                                    navigation.navigate('PaymentPage')
+                                }>
                                 Join Now
                             </Button>
                             <Text

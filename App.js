@@ -9,6 +9,7 @@ import ViewAll from './screens/viewAll';
 import MovieDetails from './screens/movieDetails';
 import TesForm from './screens/tesForm';
 import OrderPage from './screens/orderPage';
+import PaymentPage from './screens/paymentPage';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
@@ -59,6 +60,11 @@ const App = () => {
                             name="OrderPage"
                             component={OrderPage}
                             options={{title: 'Order Page'}}
+                        />
+                        <Stack.Screen
+                            name="PaymentPage"
+                            component={PaymentPage}
+                            options={{title: 'Payment Page'}}
                         />
                     </Stack.Navigator>
                 </NavigationContainer>
