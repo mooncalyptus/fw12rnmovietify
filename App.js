@@ -11,6 +11,7 @@ import TesForm from './screens/tesForm';
 import OrderPage from './screens/orderPage';
 import PaymentPage from './screens/paymentPage';
 import Profile from './screens/profile';
+import OrderHistory from './screens/orderHistory';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
@@ -71,6 +72,11 @@ const App = () => {
                             name="Profile"
                             component={Profile}
                             options={{title: 'Profile'}}
+                        />
+                        <Stack.Screen
+                            name="OrderHistory"
+                            component={OrderHistory}
+                            options={{title: 'Order History'}}
                         />
                     </Stack.Navigator>
                 </NavigationContainer>

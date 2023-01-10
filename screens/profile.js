@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, TouchableOpacity} from 'react-native';
 import {
     Button,
     Input,
@@ -21,7 +21,7 @@ import Icon from 'react-native-vector-icons/Feather';
 import Navbar from '../src/components/navbar';
 import Footer from '../src/components/footer';
 
-const Profile = () => {
+const Profile = ({navigation}) => {
     const [show, setShow] = React.useState(false);
     return (
         <ScrollView>
@@ -38,7 +38,10 @@ const Profile = () => {
                     <Divider my="2" backgroundColor="#97DECE" />
                 </Stack>
                 <Stack>
-                    <Text>Order History</Text>
+                    <TouchableOpacity
+                        onPress={() => navigation.navigate('OrderHistory')}>
+                        <Text>Order History</Text>
+                    </TouchableOpacity>
                     <Divider my="2" backgroundColor="white" />
                 </Stack>
             </Stack>
