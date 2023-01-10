@@ -188,9 +188,7 @@ const Home = ({navigation}) => {
                             />
                             <Button
                                 style={{width: '90%', marginTop: 15}}
-                                onPress={() =>
-                                    navigation.navigate('PaymentPage')
-                                }>
+                                onPress={() => navigation.navigate('Profile')}>
                                 Join Now
                             </Button>
                             <Text

@@ -3,7 +3,6 @@ import {
     Button,
     Input,
     FormControl,
-    View,
     Text,
     Image,
     ScrollView,
@@ -19,7 +18,6 @@ import {
 import Icon from 'react-native-vector-icons/Feather';
 import Navbar from '../src/components/navbar';
 import Footer from '../src/components/footer';
-import GridSeat from '../src/components/gridSeat';
 
 const PaymentPage = ({navigation}) => {
     return (
@@ -219,7 +217,7 @@ const PaymentPage = ({navigation}) => {
                     <Box alignItems="center" my="50">
                         <Button
                             width="70%"
-                            onPress={() => navigation.navigate('PaymentPage')}>
+                            onPress={() => navigation.navigate('Profile')}>
                             Pay your Order
                         </Button>
                     </Box>
