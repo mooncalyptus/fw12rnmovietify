@@ -12,6 +12,7 @@ import OrderPage from './screens/orderPage';
 import PaymentPage from './screens/paymentPage';
 import Profile from './screens/profile';
 import OrderHistory from './screens/orderHistory';
+import TicketResult from './screens/ticketResult';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
@@ -71,12 +72,17 @@ const App = () => {
                         <Stack.Screen
                             name="Profile"
                             component={Profile}
-                            options={{title: 'Profile'}}
+                            options={{title: 'Details Account'}}
                         />
                         <Stack.Screen
                             name="OrderHistory"
                             component={OrderHistory}
                             options={{title: 'Order History'}}
+                        />
+                        <Stack.Screen
+                            name="TicketResult"
+                            component={TicketResult}
+                            options={{title: 'Ticket Result'}}
                         />
                     </Stack.Navigator>
                 </NavigationContainer>

@@ -65,7 +65,10 @@ const OrderHistory = ({navigation}) => {
                         <Text>Tuesday, 07 July 2020 - 04:30pm</Text>
                         <Text>Spider-Man: Homecoming</Text>
                         <Divider my="2" />
-                        <Button>Ticket in active</Button>
+                        <Button
+                            onPress={() => navigation.navigate('TicketResult')}>
+                            Ticket in active
+                        </Button>
                     </Stack>
                 </Box>
 
@@ -76,7 +79,7 @@ const OrderHistory = ({navigation}) => {
                     py="10"
                     borderRadius="md">
                     <Stack pl="5" mb={3}>
-                    <Image
+                        <Image
                             source={require('../src/images/footer-1.png')}
                             style={{width: 70, height: 25}}
                             alt="footer"
