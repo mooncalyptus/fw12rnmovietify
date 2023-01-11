@@ -127,7 +127,9 @@ const Register = ({navigation}) => {
                                                 base: '90%',
                                                 md: '25%',
                                             }}
-                                            onChangeText={handleChange('phoneNumber')}
+                                            onChangeText={handleChange(
+                                                'phoneNumber',
+                                            )}
                                             onBlur={handleBlur('phoneNumber')}
                                             placeholder="Input your Phone Number"
                                         />
@@ -192,7 +194,9 @@ const Register = ({navigation}) => {
                                                     />
                                                 </Pressable>
                                             }
-                                            onChangeText={handleChange('password')}
+                                            onChangeText={handleChange(
+                                                'password',
+                                            )}
                                             onBlur={handleBlur('password')}
                                             placeholder="Input your Password"
                                         />

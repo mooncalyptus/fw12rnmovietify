@@ -2,7 +2,7 @@ import React from 'react';
 import {View, Text, Image, StyleSheet, ScrollView} from 'react-native';
 import {Button, Input, FormControl, Select, CheckIcon} from 'native-base';
 import Icon from 'react-native-vector-icons/Feather';
-import Navbar from '../src/components/navbar';
+import Navbar from './navbar';
 import Footer from '../src/components/footer';
 
 const MovieDetails = ({navigation}) => {

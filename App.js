@@ -7,12 +7,12 @@ import ForgotPassword from './screens/forgotPassword';
 import SetPassword from './screens/setPassword';
 import ViewAll from './screens/viewAll';
 import MovieDetails from './screens/movieDetails';
-import TesForm from './screens/tesForm';
 import OrderPage from './screens/orderPage';
 import PaymentPage from './screens/paymentPage';
 import Profile from './screens/profile';
 import OrderHistory from './screens/orderHistory';
 import TicketResult from './screens/ticketResult';
+import Navbar from './screens/navbar';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
@@ -55,11 +55,6 @@ const App = () => {
                             options={{title: 'Movie Details'}}
                         />
                         <Stack.Screen
-                            name="TesForm"
-                            component={TesForm}
-                            options={{title: 'Tes Form'}}
-                        />
-                        <Stack.Screen
                             name="OrderPage"
                             component={OrderPage}
                             options={{title: 'Order Page'}}
@@ -70,11 +65,6 @@ const App = () => {
                             options={{title: 'Payment Page'}}
                         />
                         <Stack.Screen
-                            name="Profile"
-                            component={Profile}
-                            options={{title: 'Details Account'}}
-                        />
-                        <Stack.Screen
                             name="OrderHistory"
                             component={OrderHistory}
                             options={{title: 'Order History'}}
@@ -83,6 +73,16 @@ const App = () => {
                             name="TicketResult"
                             component={TicketResult}
                             options={{title: 'Ticket Result'}}
+                        />
+                        <Stack.Screen
+                            name="Navbar"
+                            component={Navbar}
+                            options={{headerShown: false}}
+                        />
+                        <Stack.Screen
+                            name="Profile"
+                            component={Profile}
+                            options={{title: 'Details Account'}}
                         />
                     </Stack.Navigator>
                 </NavigationContainer>

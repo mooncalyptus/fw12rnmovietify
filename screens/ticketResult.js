@@ -18,7 +18,7 @@ import {
     Pressable,
 } from 'native-base';
 import Icon from 'react-native-vector-icons/Feather';
-import Navbar from '../src/components/navbar';
+import Navbar from './navbar';
 import Footer from '../src/components/footer';
 
 const TicketResult = () => {

@@ -8,7 +8,7 @@ import {
     Stack,
     Divider,
 } from 'native-base';
-import Navbar from '../src/components/navbar';
+import Navbar from './navbar';
 import Footer from '../src/components/footer';
 import GridSeat from '../src/components/gridSeat';
 

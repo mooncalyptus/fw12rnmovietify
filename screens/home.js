@@ -1,31 +1,57 @@
 import React from 'react';
+import {Text, Image, StyleSheet, ScrollView} from 'react-native';
 import {
+    Button,
+    Input,
+    FormControl,
     View,
-    Text,
-    Image,
-    StyleSheet,
-    ScrollView,
-    TouchableOpacity,
-} from 'react-native';
-import {Button, Input, FormControl} from 'native-base';
+    Box,
+    HStack,
+    VStack,
+    Pressable,
+} from 'native-base';
 import Icon from 'react-native-vector-icons/Feather';
+import Navbar from './navbar';
+import Footer from '../src/components/footer';
+import image1 from '../src/images/image1.png';
+import image2 from '../src/images/image2.png';
+import image3 from '../src/images/image3.png';
+
+const movies = [
+    {
+        id: 1,
+        title: 'Spider-Man: Homecoming',
+        image: image1,
+        genre: 'Adventure, Action, Sci-Fi',
+    },
+    {
+        id: 2,
+        title: 'Spider-Man: Homecoming',
+        image: image2,
+        genre: 'Adventure, Action, Sci-Fi',
+    },
+    {
+        id: 3,
+        title: 'Spider-Man: Homecoming',
+        image: image3,
+        genre: 'Adventure, Action, Sci-Fi',
+    },
+];
 
 const Home = ({navigation}) => {
+    const [focus, setFocus] = React.useState(null);
+    const toggleFocus = id => {
+        if (focus === id) {
+            setFocus(null);
+        } else {
+            setFocus(id);
+        }
+    };
     return (
         <ScrollView>
             <View>
                 {/* Navbar */}
-                <View style={styles.navbar}>
-                    <View style={styles.logo}>
-                        <Image
-                            source={require('../src/images/logo.png')}
-                            style={{width: 100, height: 40}}
-                        />
-                    </View>
-                    <View style={styles.menu}>
-                        <Icon name="menu" size={20} />
-                    </View>
-                </View>
+                <Navbar />
                 {/* Navbar end */}
 
                 {/* Konten Header */}
@@ -44,47 +70,167 @@ const Home = ({navigation}) => {
                 {/* Konten header end */}
 
                 {/* Konten Now Showing */}
-                <View
-                    style={{
-                        backgroundColor: '#97DECE',
-                        paddingTop: 25,
-                        paddingBottom: 40,
-                    }}>
-                    <View style={styles.nowShowingText}>
-                        <Text style={styles.nowShowingFirst}>Now Showing</Text>
-                        <TouchableOpacity
-                            onPress={() => navigation.navigate('ViewAll')}>
-                            <Text>View All</Text>
-                        </TouchableOpacity>
-                    </View>
-
-                    <ScrollView horizontal={true} style={{marginTop: 20}}>
-                        <View style={styles.imageSection}>
-                            <TouchableOpacity
-                                onPress={() => navigation.navigate('ViewAll')}>
-                                <Image
-                                    source={require('../src/images/now-1.png')}
-                                />
-                            </TouchableOpacity>
-                        </View>
-                        <View style={styles.imageSection}>
-                            <TouchableOpacity
-                                onPress={() => navigation.navigate('ViewAll')}>
-                                <Image
-                                    source={require('../src/images/now-2.png')}
-                                />
-                            </TouchableOpacity>
-                        </View>
-                        <View style={styles.imageSection}>
-                            <TouchableOpacity
-                                onPress={() => navigation.navigate('ViewAll')}>
-                                <Image
-                                    source={require('../src/images/now-3.png')}
-                                />
-                            </TouchableOpacity>
-                        </View>
+                <VStack space={2} backgroundColor="#97DECE" p="10">
+                    <HStack justifyContent="space-between">
+                        <Text>Now Showing</Text>
+                        <Text>view all</Text>
+                    </HStack>
+                    <ScrollView height={focus ? 400 : 'auto'} horizontal>
+                        <HStack space={3}>
+                            {movies.map(o => (
+                                <Pressable onPress={() => toggleFocus(o.id)}>
+                                    <Box
+                                        borderWidth="1"
+                                        bg={
+                                            focus === o.id
+                                                ? 'white'
+                                                : 'transparent'
+                                        }
+                                        borderColor={
+                                            focus === o.id ? '#dedede' : 'white'
+                                        }
+                                        borderRadius="4"
+                                        p={focus === o.id ? '0' : '3'}>
+                                        <Image
+                                            source={o.image}
+                                            width="160px"
+                                            height="250px"
+                                            resizeMode="cover"
+                                        />
+                                        <Box position="relative">
+                                            {focus === o.id && (
+                                                <Box
+                                                    pt="5"
+                                                    px="2"
+                                                    pb="3"
+                                                    position="absolute"
+                                                    bg="white"
+                                                    width="full">
+                                                    <VStack space={2}>
+                                                        <Text>{o.title}</Text>
+                                                        <Text>{o.genre}</Text>
+                                                        <Button>Details</Button>
+                                                    </VStack>
+                                                </Box>
+                                            )}
+                                        </Box>
+                                    </Box>
+                                </Pressable>
+                            ))}
+                            {/* <Pressable onPress={() => setFocus(!focus)}>
+                                <Box
+                                    borderWidth="1"
+                                    bg={focus ? 'white' : 'transparent'}
+                                    borderColor={focus ? '#dedede' : 'white'}
+                                    borderRadius="4"
+                                    p={focus ? '0' : '3'}>
+                                    <Image
+                                        source={require('../src/images/now-1.png')}
+                                        width="160px"
+                                        height="250px"
+                                        resizeMode="cover"
+                                    />
+                                    <Box position="relative">
+                                        {focus && (
+                                            <Box
+                                                pt="5"
+                                                px="2"
+                                                pb="3"
+                                                position="absolute"
+                                                bg="white"
+                                                width="full">
+                                                <VStack space={2}>
+                                                    <Text>
+                                                        Spider-Man: Homecoming
+                                                    </Text>
+                                                    <Text>
+                                                        Adventure, Action,
+                                                        Sci-Fi
+                                                    </Text>
+                                                    <Button>Details</Button>
+                                                </VStack>
+                                            </Box>
+                                        )}
+                                    </Box>
+                                </Box>
+                            </Pressable>
+                            <Pressable onPress={() => setFocus(!focus)}>
+                                <Box
+                                    borderWidth="1"
+                                    bg={focus ? 'white' : 'transparent'}
+                                    borderColor={focus ? '#dedede' : 'white'}
+                                    borderRadius="4"
+                                    p={focus ? '0' : '3'}>
+                                    <Image
+                                        source={require('../src/images/now-2.png')}
+                                        width="160px"
+                                        height="250px"
+                                        resizeMode="cover"
+                                    />
+                                    <Box position="relative">
+                                        {focus && (
+                                            <Box
+                                                pt="5"
+                                                px="2"
+                                                pb="3"
+                                                position="absolute"
+                                                bg="white"
+                                                width="full">
+                                                <VStack space={2}>
+                                                    <Text>
+                                                        Spider-Man: Homecoming
+                                                    </Text>
+                                                    <Text>
+                                                        Adventure, Action,
+                                                        Sci-Fi
+                                                    </Text>
+                                                    <Button>Details</Button>
+                                                </VStack>
+                                            </Box>
+                                        )}
+                                    </Box>
+                                </Box>
+                            </Pressable>
+                            <Pressable onPress={() => setFocus(!focus)}>
+                                <Box
+                                    borderWidth="1"
+                                    bg={focus ? 'white' : 'transparent'}
+                                    borderColor={focus ? '#dedede' : 'white'}
+                                    borderRadius="4"
+                                    p={focus ? '0' : '3'}>
+                                    <Image
+                                        source={require('../src/images/now-3.png')}
+                                        width="160px"
+                                        height="250px"
+                                        resizeMode="cover"
+                                    />
+                                    <Box position="relative">
+                                        {focus && (
+                                            <Box
+                                                pt="5"
+                                                px="2"
+                                                pb="3"
+                                                position="absolute"
+                                                bg="white"
+                                                width="full">
+                                                <VStack space={2}>
+                                                    <Text>
+                                                        Spider-Man: Homecoming
+                                                    </Text>
+                                                    <Text>
+                                                        Adventure, Action,
+                                                        Sci-Fi
+                                                    </Text>
+                                                    <Button>Details</Button>
+                                                </VStack>
+                                            </Box>
+                                        )}
+                                    </Box>
+                                </Box>
+                            </Pressable> */}
+                        </HStack>
                     </ScrollView>
-                </View>
+                </VStack>
                 {/* Konten Now Showing end */}
 
                 {/* Konten Upcoming Movies */}
@@ -207,93 +353,7 @@ const Home = ({navigation}) => {
                 {/* Konten mails end */}
 
                 {/* Konten Footer */}
-                <View style={{marginTop: 40}}>
-                    <View>
-                        <Image
-                            source={require('../src/images/logo.png')}
-                            style={{width: 150, height: 40}}
-                        />
-                    </View>
-                    <View style={{marginTop: 15, paddingHorizontal: 10}}>
-                        <Text>Stop waiting in line.</Text>
-                        <Text>
-                            Buy tickets conveniently, watch movies quietly.
-                        </Text>
-                    </View>
-                    <View style={{marginTop: 15, paddingHorizontal: 10}}>
-                        <View>
-                            <Text>Explore</Text>
-                        </View>
-                        <View style={{flexDirection: 'row'}}>
-                            <Text style={{marginRight: 40}}>Home</Text>
-                            <Text>List Movie</Text>
-                        </View>
-                        <View>
-                            <View style={{marginTop: 15}}>
-                                <Text>Our Sponsor</Text>
-                            </View>
-                            <View
-                                style={{
-                                    flexDirection: 'row',
-                                    marginTop: 10,
-                                    paddingRight: 10,
-                                }}>
-                                <Image
-                                    source={require('../src/images/footer-1.png')}
-                                    style={{width: 70, height: 25}}
-                                />
-                                <Image
-                                    source={require('../src/images/footer-2.png')}
-                                    style={{
-                                        width: '50%',
-                                        height: 25,
-                                        marginLeft: 15,
-                                    }}
-                                />
-                                <Image
-                                    source={require('../src/images/footer-3.png')}
-                                    style={{
-                                        width: 75,
-                                        height: 25,
-                                        marginLeft: 15,
-                                    }}
-                                />
-                            </View>
-                            <View style={{marginTop: 15}}>
-                                <View>
-                                    <Text>Follow Us</Text>
-                                </View>
-                                <View
-                                    style={{
-                                        flexDirection: 'row',
-                                        marginTop: 15,
-                                    }}>
-                                    <Icon
-                                        name="facebook"
-                                        size={25}
-                                        style={{marginRight: 10}}
-                                    />
-                                    <Icon
-                                        name="instagram"
-                                        size={25}
-                                        style={{marginRight: 10}}
-                                    />
-                                    <Icon
-                                        name="twitter"
-                                        size={25}
-                                        style={{marginRight: 10}}
-                                    />
-                                    <Icon name="youtube" size={25} />
-                                </View>
-                            </View>
-                            <View style={{marginTop: 15}}>
-                                <Text>
-                                    &copy; 2023 movietify. All Rights Reserved.
-                                </Text>
-                            </View>
-                        </View>
-                    </View>
-                </View>
+                <Footer />
                 {/* Konten footer end */}
             </View>
         </ScrollView>
