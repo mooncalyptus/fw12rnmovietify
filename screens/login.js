@@ -53,7 +53,7 @@ const Login = ({navigation}) => {
                             errors,
                             values,
                         }) => (
-                            <FormControl isRequired>
+                            <FormControl isInvalid>
                                 <Stack>
                                     <FormControl.Label>Email</FormControl.Label>
                                     <View style={styles.firstComponent}>
@@ -161,6 +161,8 @@ const styles = StyleSheet.create({
     },
     textFirst: {
         marginLeft: 5,
+        fontSize: 26,
+        fontWeight: 'bold',
     },
     textDesc: {
         marginTop: 12,

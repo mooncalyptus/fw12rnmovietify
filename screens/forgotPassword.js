@@ -1,6 +1,6 @@
 import React from 'react';
-import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
-import {Input, FormControl, Stack, Pressable, Button} from 'native-base';
+import {View, StyleSheet, Image, TouchableOpacity} from 'react-native';
+import {Input, FormControl, Stack, Text, Pressable, Button} from 'native-base';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
 import YupPassword from 'yup-password';
@@ -18,7 +18,9 @@ const ForgotPassword = ({navigation}) => {
                 source={require('../src/images/logo.png')}
                 style={{width: 100, height: 40}}
             />
-            <Text style={styles.desc}>Forgot Password</Text>
+            <Text fontSize="26px" fontWeight="bold" pl="2">
+                Forgot Password
+            </Text>
             <Text style={styles.desc}>
                 we'll send a link to your email shortly
             </Text>
@@ -33,7 +35,7 @@ const ForgotPassword = ({navigation}) => {
                         errors,
                         values,
                     }) => (
-                        <FormControl isRequired>
+                        <FormControl isInvalid>
                             <Stack>
                                 <FormControl.Label>Email</FormControl.Label>
                                 <View style={styles.inputComponent}>

@@ -1,6 +1,6 @@
 import React from 'react';
-import {View, Text, Image, StyleSheet, ScrollView} from 'react-native';
-import {Button, Input, FormControl} from 'native-base';
+import {View, Image, StyleSheet, ScrollView} from 'react-native';
+import {Button, Input, Text, Box} from 'native-base';
 import Icon from 'react-native-vector-icons/Feather';
 import Navbar from './navbar';
 import Footer from '../src/components/footer';
@@ -12,7 +12,9 @@ const ViewAll = ({navigation}) => {
                 <Navbar />
                 {/* Konten */}
                 <View style={{backgroundColor: '#F5F6F8'}}>
-                    <Text style={{paddingLeft: 17}}>List Movie</Text>
+                    <Text pl="18" fontSize="18" pt="5">
+                        List Movie
+                    </Text>
                     <View
                         style={{
                             flexDirection: 'row',
@@ -38,44 +40,46 @@ const ViewAll = ({navigation}) => {
                             />
                         </View>
                     </View>
-                    <ScrollView horizontal={true}>
-                        <View style={styles.upcomingMonth}>
-                            <Text>January</Text>
-                        </View>
-                        <View style={styles.upcomingMonth}>
-                            <Text>February</Text>
-                        </View>
-                        <View style={styles.upcomingMonth}>
-                            <Text>March</Text>
-                        </View>
-                        <View style={styles.upcomingMonth}>
-                            <Text>April</Text>
-                        </View>
-                        <View style={styles.upcomingMonth}>
-                            <Text>May</Text>
-                        </View>
-                        <View style={styles.upcomingMonth}>
-                            <Text>June</Text>
-                        </View>
-                        <View style={styles.upcomingMonth}>
-                            <Text>July</Text>
-                        </View>
-                        <View style={styles.upcomingMonth}>
-                            <Text>August</Text>
-                        </View>
-                        <View style={styles.upcomingMonth}>
-                            <Text>September</Text>
-                        </View>
-                        <View style={styles.upcomingMonth}>
-                            <Text>October</Text>
-                        </View>
-                        <View style={styles.upcomingMonth}>
-                            <Text>November</Text>
-                        </View>
-                        <View style={styles.upcomingMonth}>
-                            <Text>December</Text>
-                        </View>
-                    </ScrollView>
+                    <Box mt="5">
+                        <ScrollView horizontal={true}>
+                            <View style={styles.upcomingMonth}>
+                                <Text>January</Text>
+                            </View>
+                            <View style={styles.upcomingMonth}>
+                                <Text>February</Text>
+                            </View>
+                            <View style={styles.upcomingMonth}>
+                                <Text>March</Text>
+                            </View>
+                            <View style={styles.upcomingMonth}>
+                                <Text>April</Text>
+                            </View>
+                            <View style={styles.upcomingMonth}>
+                                <Text>May</Text>
+                            </View>
+                            <View style={styles.upcomingMonth}>
+                                <Text>June</Text>
+                            </View>
+                            <View style={styles.upcomingMonth}>
+                                <Text>July</Text>
+                            </View>
+                            <View style={styles.upcomingMonth}>
+                                <Text>August</Text>
+                            </View>
+                            <View style={styles.upcomingMonth}>
+                                <Text>September</Text>
+                            </View>
+                            <View style={styles.upcomingMonth}>
+                                <Text>October</Text>
+                            </View>
+                            <View style={styles.upcomingMonth}>
+                                <Text>November</Text>
+                            </View>
+                            <View style={styles.upcomingMonth}>
+                                <Text>December</Text>
+                            </View>
+                        </ScrollView>
+                    </Box>
                     {/* Grid Film */}
                     <View>
                         <View style={{flexDirection: 'row'}}>
@@ -162,6 +166,7 @@ const ViewAll = ({navigation}) => {
                             </Button>
                         </View>
                     </View>
+                    {/* Grid Film End */}
                 </View>
             </View>
             <Footer />

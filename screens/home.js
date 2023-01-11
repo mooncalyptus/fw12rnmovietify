@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, Image, StyleSheet, ScrollView} from 'react-native';
+import {Image, StyleSheet, ScrollView} from 'react-native';
 import {
     Button,
     Input,
@@ -9,6 +9,7 @@ import {
     HStack,
     VStack,
     Pressable,
+    Text,
 } from 'native-base';
 import Icon from 'react-native-vector-icons/Feather';
 import Navbar from './navbar';
@@ -26,13 +27,13 @@ const movies = [
     },
     {
         id: 2,
-        title: 'Spider-Man: Homecoming',
+        title: 'Lion King',
         image: image2,
         genre: 'Adventure, Action, Sci-Fi',
     },
     {
         id: 3,
-        title: 'Spider-Man: Homecoming',
+        title: 'John Wick',
         image: image3,
         genre: 'Adventure, Action, Sci-Fi',
     },
@@ -55,11 +56,17 @@ const Home = ({navigation}) => {
                 {/* Navbar end */}
 
                 {/* Konten Header */}
-                <View>
+                <View mt="5">
                     <Text style={{paddingHorizontal: 15}}>
                         Nearest Cinema, Newest Movie,
                     </Text>
-                    <Text style={{paddingHorizontal: 15}}>Find Out Now</Text>
+                    <Text
+                        px="15"
+                        fontSize="32"
+                        color="#97DECE"
+                        fontWeight="bold">
+                        Find Out Now
+                    </Text>
                     <View style={{paddingHorizontal: 15}}>
                         <Image
                             source={require('../src/images/header.png')}
@@ -72,8 +79,11 @@ const Home = ({navigation}) => {
                 {/* Konten Now Showing */}
                 <VStack space={2} backgroundColor="#97DECE" p="10">
                     <HStack justifyContent="space-between">
-                        <Text>Now Showing</Text>
-                        <Text>view all</Text>
+                        <Text color="white">Now Showing</Text>
+                        <Pressable
+                            onPress={() => navigation.navigate('ViewAll')}>
+                            <Text color="white">view all</Text>
+                        </Pressable>
                     </HStack>
                     <ScrollView height={focus ? 400 : 'auto'} horizontal>
                         <HStack space={3}>
@@ -102,11 +112,14 @@ const Home = ({navigation}) => {
                                                 <Box
                                                     pt="5"
                                                     px="2"
-                                                    pb="3"
+                                                    pb="5"
                                                     position="absolute"
                                                     bg="white"
                                                     width="full">
-                                                    <VStack space={2}>
+                                                    <VStack
+                                                        space={2}
+                                                        justifyContent="center"
+                                                        alignItems="center">
                                                         <Text>{o.title}</Text>
                                                         <Text>{o.genre}</Text>
                                                         <Button>Details</Button>
@@ -117,117 +130,6 @@ const Home = ({navigation}) => {
                                     </Box>
                                 </Pressable>
                             ))}
-                            {/* <Pressable onPress={() => setFocus(!focus)}>
-                                <Box
-                                    borderWidth="1"
-                                    bg={focus ? 'white' : 'transparent'}
-                                    borderColor={focus ? '#dedede' : 'white'}
-                                    borderRadius="4"
-                                    p={focus ? '0' : '3'}>
-                                    <Image
-                                        source={require('../src/images/now-1.png')}
-                                        width="160px"
-                                        height="250px"
-                                        resizeMode="cover"
-                                    />
-                                    <Box position="relative">
-                                        {focus && (
-                                            <Box
-                                                pt="5"
-                                                px="2"
-                                                pb="3"
-                                                position="absolute"
-                                                bg="white"
-                                                width="full">
-                                                <VStack space={2}>
-                                                    <Text>
-                                                        Spider-Man: Homecoming
-                                                    </Text>
-                                                    <Text>
-                                                        Adventure, Action,
-                                                        Sci-Fi
-                                                    </Text>
-                                                    <Button>Details</Button>
-                                                </VStack>
-                                            </Box>
-                                        )}
-                                    </Box>
-                                </Box>
-                            </Pressable>
-                            <Pressable onPress={() => setFocus(!focus)}>
-                                <Box
-                                    borderWidth="1"
-                                    bg={focus ? 'white' : 'transparent'}
-                                    borderColor={focus ? '#dedede' : 'white'}
-                                    borderRadius="4"
-                                    p={focus ? '0' : '3'}>
-                                    <Image
-                                        source={require('../src/images/now-2.png')}
-                                        width="160px"
-                                        height="250px"
-                                        resizeMode="cover"
-                                    />
-                                    <Box position="relative">
-                                        {focus && (
-                                            <Box
-                                                pt="5"
-                                                px="2"
-                                                pb="3"
-                                                position="absolute"
-                                                bg="white"
-                                                width="full">
-                                                <VStack space={2}>
-                                                    <Text>
-                                                        Spider-Man: Homecoming
-                                                    </Text>
-                                                    <Text>
-                                                        Adventure, Action,
-                                                        Sci-Fi
-                                                    </Text>
-                                                    <Button>Details</Button>
-                                                </VStack>
-                                            </Box>
-                                        )}
-                                    </Box>
-                                </Box>
-                            </Pressable>
-                            <Pressable onPress={() => setFocus(!focus)}>
-                                <Box
-                                    borderWidth="1"
-                                    bg={focus ? 'white' : 'transparent'}
-                                    borderColor={focus ? '#dedede' : 'white'}
-                                    borderRadius="4"
-                                    p={focus ? '0' : '3'}>
-                                    <Image
-                                        source={require('../src/images/now-3.png')}
-                                        width="160px"
-                                        height="250px"
-                                        resizeMode="cover"
-                                    />
-                                    <Box position="relative">
-                                        {focus && (
-                                            <Box
-                                                pt="5"
-                                                px="2"
-                                                pb="3"
-                                                position="absolute"
-                                                bg="white"
-                                                width="full">
-                                                <VStack space={2}>
-                                                    <Text>
-                                                        Spider-Man: Homecoming
-                                                    </Text>
-                                                    <Text>
-                                                        Adventure, Action,
-                                                        Sci-Fi
-                                                    </Text>
-                                                    <Button>Details</Button>
-                                                </VStack>
-                                            </Box>
-                                        )}
-                                    </Box>
-                                </Box>
-                            </Pressable> */}
                         </HStack>
                     </ScrollView>
                 </VStack>
@@ -334,7 +236,9 @@ const Home = ({navigation}) => {
                             />
                             <Button
                                 style={{width: '90%', marginTop: 15}}
-                                onPress={() => navigation.navigate('Profile')}>
+                                onPress={() =>
+                                    navigation.navigate('TicketResult')
+                                }>
                                 Join Now
                             </Button>
                             <Text

@@ -1,6 +1,6 @@
 import React from 'react';
-import {View, Text, Image, StyleSheet, ScrollView} from 'react-native';
-import {Button, Input, FormControl, Select, CheckIcon} from 'native-base';
+import {Text, Image, StyleSheet, ScrollView} from 'react-native';
+import {Button, Select, CheckIcon, View, Stack, Box} from 'native-base';
 import Icon from 'react-native-vector-icons/Feather';
 import Navbar from './navbar';
 import Footer from '../src/components/footer';
@@ -11,57 +11,65 @@ const MovieDetails = ({navigation}) => {
         <ScrollView>
             <Navbar />
             {/* Konten */}
-            <View style={{backgroundColor: '#F5F6F8'}}>
+            <View backgroundColor="white" px="5">
                 <View style={styles.imageMovies}>
                     <View style={styles.moviesBorder}>
                         <Image source={require('../src/images/now-1.png')} />
                     </View>
                 </View>
-                <View style={{marginTop: 35}}>
-                    <Text style={{textAlign: 'center'}}>
-                        Spider-Man: Homecoming
-                    </Text>
-                    <Text style={{textAlign: 'center'}}>
-                        Adventure, Action, Sci-Fi
-                    </Text>
-                </View>
-                <View style={{flexDirection: 'row'}}>
-                    <View style={{flex: 1}}>
-                        <View>
-                            <Text>Release date</Text>
-                            <Text>June 28, 2017</Text>
-                        </View>
-                        <View>
-                            <Text>Duration</Text>
-                            <Text>2 hrs 13 min</Text>
-                        </View>
+                <Stack justifyContent="center" alignContent="center" space={3}>
+                    <View style={{marginTop: 35}}>
+                        <Stack space={2}>
+                            <Text style={{textAlign: 'center'}}>
+                                Spider-Man: Homecoming
+                            </Text>
+                            <Text style={{textAlign: 'center'}}>
+                                Adventure, Action, Sci-Fi
+                            </Text>
+                        </Stack>
                     </View>
+                    <Stack direction="row" space={7} mt="5">
+                        <Stack space={2}>
+                            <Stack>
+                                <Text>Release date</Text>
+                                <Text>June 28, 2017</Text>
+                            </Stack>
+                            <Stack>
+                                <Text>Duration</Text>
+                                <Text>2 hrs 13 min</Text>
+                            </Stack>
+                        </Stack>
+                        <Stack space={2}>
+                            <Stack>
+                                <Text>Directed by</Text>
+                                <Text>Jon Watss</Text>
+                            </Stack>
+                            <Stack pr="5">
+                                <Text>Casts</Text>
+                                <Text>
+                                    Tom Holland, Robert Downey Jr., etc.
+                                </Text>
+                            </Stack>
+                        </Stack>
+                    </Stack>
                     <View>
-                        <View>
-                            <Text>Directed by</Text>
-                            <Text>Jon Watss</Text>
-                        </View>
-                        <View>
-                            <Text>Casts</Text>
-                            <Text>Tom Holland, Robert Downey Jr., etc.</Text>
-                        </View>
+                        <Text>Synopsis</Text>
+                        <Text>
+                            Thrilled by his experience with the Avengers, Peter
+                            returns home, where he lives with his Aunt May,
+                            under the watchful eye of his new mentor Tony Stark,
+                            Peter tries to fall back into his normal daily
+                            routine - distracted by thoughts of proving himself
+                            to be more than just your friendly neighborhood
+                            Spider-Man - but when the Vulture emerges as a new
+                            villain, everything that Peter holds most important
+                            will be threatened.
+                        </Text>
                     </View>
-                </View>
-                <View>
-                    <Text>Synopsis</Text>
-                    <Text>
-                        Thrilled by his experience with the Avengers, Peter
-                        returns home, where he lives with his Aunt May, under
-                        the watchful eye of his new mentor Tony Stark, Peter
-                        tries to fall back into his normal daily routine -
-                        distracted by thoughts of proving himself to be more
-                        than just your friendly neighborhood Spider-Man - but
-                        when the Vulture emerges as a new villain, everything
-                        that Peter holds most important will be threatened.
-                    </Text>
-                </View>
+                </Stack>
                 {/* Show times and tickets */}
-                <View>
+                <Box />
+                <Stack space={3} mt="5">
                     <Text>Showtimes and Tickets</Text>
                     <View>
                         <Select
@@ -117,102 +125,155 @@ const MovieDetails = ({navigation}) => {
                             />
                         </Select>
                     </View>
-                </View>
+                </Stack>
+                {/* Konten Cinemas 1*/}
                 <View style={styles.boxCinemas}>
                     <View>
-                        <View style={{paddingLeft: 90}}>
-                            <Image
-                                source={require('../src/images/footer-1.png')}
-                                style={{width: 70, height: 27}}
+                        <Stack space={3}>
+                            <View style={{paddingLeft: 90}}>
+                                <Image
+                                    source={require('../src/images/footer-1.png')}
+                                    style={{width: 70, height: 27}}
+                                />
+                            </View>
+                            <Text style={{marginTop: 15}}>
+                                Whatever street No.12, South Purwokerto
+                            </Text>
+                            <View
+                                style={{
+                                    borderBottomColor: 'black',
+                                    borderBottomWidth: StyleSheet.hairlineWidth,
+                                }}
                             />
-                        </View>
-                        <Text style={{marginTop: 15}}>
-                            Whatever street No.12, South Purwokerto
-                        </Text>
-                        <View
-                            style={{
-                                borderBottomColor: 'black',
-                                borderBottomWidth: StyleSheet.hairlineWidth,
-                            }}
-                        />
-                        <View>
-                            <View
-                                style={{
-                                    flexDirection: 'row',
-                                    paddingLeft: 20,
-                                    marginTop: 15,
-                                }}>
-                                <Text>08:30am</Text>
-                                <Text>08:30am</Text>
-                                <Text>08:30am</Text>
-                                <Text>08:30am</Text>
+                            <View>
+                                <Stack space={2}>
+                                    <View
+                                        style={{
+                                            flexDirection: 'row',
+                                            paddingLeft: 15,
+                                            marginTop: 15,
+                                        }}>
+                                        <Stack direction="row" space={2}>
+                                            <Text>08:30am</Text>
+                                            <Text>08:30am</Text>
+                                            <Text>08:30am</Text>
+                                            <Text>08:30am</Text>
+                                        </Stack>
+                                    </View>
+                                    <View
+                                        style={{
+                                            flexDirection: 'row',
+                                            paddingLeft: 15,
+                                        }}>
+                                        <Stack direction="row" space={2}>
+                                            <Text>08:30am</Text>
+                                            <Text>08:30am</Text>
+                                            <Text>08:30am</Text>
+                                            <Text>08:30am</Text>
+                                        </Stack>
+                                    </View>
+                                </Stack>
+                                <View
+                                    style={{
+                                        flexDirection: 'row',
+                                        paddingLeft: 20,
+                                        marginTop: 15,
+                                    }}>
+                                    <Text style={{flex: 1}}>Price</Text>
+                                    <Text>$10.00/seat</Text>
+                                </View>
+                                <Button
+                                    style={{elevation: 5, marginTop: 15}}
+                                    onPress={() =>
+                                        navigation.navigate('OrderPage')
+                                    }>
+                                    Book Now
+                                </Button>
                             </View>
-                            <View
-                                style={{flexDirection: 'row', paddingLeft: 20}}>
-                                <Text>08:30am</Text>
-                                <Text>08:30am</Text>
-                                <Text>08:30am</Text>
-                                <Text>08:30am</Text>
-                            </View>
-                            <View
-                                style={{
-                                    flexDirection: 'row',
-                                    paddingLeft: 20,
-                                    marginTop: 15,
-                                }}>
-                                <Text style={{flex: 1}}>Price</Text>
-                                <Text>$10.00/seat</Text>
-                            </View>
-                            <Button
-                                style={{elevation: 5}}
-                                onPress={() =>
-                                    navigation.navigate('OrderPage')
-                                }>
-                                Book Now
-                            </Button>
-                        </View>
+                        </Stack>
                     </View>
-                    <View />
                 </View>
-                <View style={{marginTop: 30}}>
+                {/* Konten cinemas 1 end */}
+
+                {/* Konten cinemas 2 */}
+                <View style={styles.boxCinemas}>
                     <View>
-                        <Image
-                            source={require('../src/images/footer-1.png')}
-                            style={{width: 70, height: 27}}
-                        />
-                        <Text>Whatever street No.12, South Purwokerto</Text>
-                        <View
+                        <Stack space={3}>
+                            <View style={{paddingLeft: 90}}>
+                                <Image
+                                    source={require('../src/images/footer-1.png')}
+                                    style={{width: 70, height: 27}}
+                                />
+                            </View>
+                            <Text style={{marginTop: 15}}>
+                                Whatever street No.12, South Purwokerto
+                            </Text>
+                            <View
+                                style={{
+                                    borderBottomColor: 'black',
+                                    borderBottomWidth: StyleSheet.hairlineWidth,
+                                }}
+                            />
+                            <View>
+                                <Stack space={2}>
+                                    <View
+                                        style={{
+                                            flexDirection: 'row',
+                                            paddingLeft: 15,
+                                            marginTop: 15,
+                                        }}>
+                                        <Stack direction="row" space={2}>
+                                            <Text>08:30am</Text>
+                                            <Text>08:30am</Text>
+                                            <Text>08:30am</Text>
+                                            <Text>08:30am</Text>
+                                        </Stack>
+                                    </View>
+                                    <View
+                                        style={{
+                                            flexDirection: 'row',
+                                            paddingLeft: 15,
+                                        }}>
+                                        <Stack direction="row" space={2}>
+                                            <Text>08:30am</Text>
+                                            <Text>08:30am</Text>
+                                            <Text>08:30am</Text>
+                                            <Text>08:30am</Text>
+                                        </Stack>
+                                    </View>
+                                </Stack>
+                                <View
+                                    style={{
+                                        flexDirection: 'row',
+                                        paddingLeft: 20,
+                                        marginTop: 15,
+                                    }}>
+                                    <Text style={{flex: 1}}>Price</Text>
+                                    <Text>$10.00/seat</Text>
+                                </View>
+                                <Button
+                                    style={{elevation: 5, marginTop: 15}}
+                                    onPress={() =>
+                                        navigation.navigate('OrderPage')
+                                    }>
+                                    Book Now
+                                </Button>
+                            </View>
+                        </Stack>
+                    </View>
+                </View>
+                {/* Konten cinemas 2 end */}
+                <View style={{marginTop: 30, marginBottom: 30}}>
+                    <View>
+                        <Text
                             style={{
-                                borderBottomColor: 'black',
-                                borderBottomWidth: StyleSheet.hairlineWidth,
-                            }}
-                        />
-                        <View>
-                            <View style={{flexDirection: 'row'}}>
-                                <Text>08:30am</Text>
-                                <Text>08:30am</Text>
-                                <Text>08:30am</Text>
-                                <Text>08:30am</Text>
-                            </View>
-                            <View style={{flexDirection: 'row'}}>
-                                <Text>08:30am</Text>
-                                <Text>08:30am</Text>
-                                <Text>08:30am</Text>
-                                <Text>08:30am</Text>
-                            </View>
-                            <View style={{flexDirection: 'row'}}>
-                                <Text style={{flex: 1}}>Price</Text>
-                                <Text>$10.00/seat</Text>
-                            </View>
-                            <Button
-                                style={{elevation: 5}}
-                                onPress={() =>
-                                    navigation.navigate('OrderPage')
-                                }>
-                                Book Now
-                            </Button>
-                        </View>
-                        <Text>View More</Text>
+                                textAlign: 'center',
+                                fontSize: 14,
+                                color: '#97DECE',
+                                fontWeight: 'bold',
+                            }}>
+                            View More
+                        </Text>
                     </View>
                 </View>
             </View>
@@ -238,9 +299,12 @@ const styles = StyleSheet.create({
         marginTop: 30,
         borderStyle: 'solid',
         borderWidth: 1,
-        borderColor: 'black',
+        borderColor: '#439A97',
+        borderRadius: 4,
         justifyContent: 'center',
         alignItems: 'center',
+        paddingTop: 10,
+        paddingBottom: 15,
     },
 });
 export default MovieDetails;

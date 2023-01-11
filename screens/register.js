@@ -246,6 +246,8 @@ const styles = StyleSheet.create({
     },
     textFirst: {
         marginLeft: 7,
+        fontSize: 26,
+        fontWeight: 'bold',
     },
     descForms: {
         marginLeft: 7,
