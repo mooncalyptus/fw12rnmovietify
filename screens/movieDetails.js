@@ -86,17 +86,11 @@ const MovieDetails = ({navigation}) => {
                             }}
                             mt={1}
                             onValueChange={itemValue => setService(itemValue)}>
-                            <Select.Item label="UX Research" value="ux" />
-                            <Select.Item label="Web Development" value="web" />
-                            <Select.Item
-                                label="Cross Platform Development"
-                                value="cross"
-                            />
-                            <Select.Item label="UI Designing" value="ui" />
-                            <Select.Item
-                                label="Backend Development"
-                                value="backend"
-                            />
+                            <Select.Item label="2023/01/12" value="12" />
+                            <Select.Item label="2023/01/13" value="13" />
+                            <Select.Item label="2023/01/14" value="14" />
+                            <Select.Item label="2023/01/15" value="15" />
+                            <Select.Item label="2023/01/16" value="16" />
                         </Select>
                     </View>
                     <View>
@@ -112,7 +106,7 @@ const MovieDetails = ({navigation}) => {
                             }}
                             mt={1}
                             onValueChange={itemValue => setService(itemValue)}>
-                            <Select.Item label="UX Research" value="ux" />
+                            <Select.Item label="Jakarta" value="ux" />
                             <Select.Item label="Web Development" value="web" />
                             <Select.Item
                                 label="Cross Platform Development"

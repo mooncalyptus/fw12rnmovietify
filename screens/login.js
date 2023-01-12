@@ -12,6 +12,8 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
 import YupPassword from 'yup-password';
+import {useDispatch} from 'react-redux';
+import {loginAction} from '../src/redux/reducers/auth';
 
 YupPassword(Yup);
 const loginSchemaValidation = Yup.object().shape({
@@ -30,6 +32,10 @@ const loginSchemaValidation = Yup.object().shape({
 
 const Login = ({navigation}) => {
     const [show, setShow] = React.useState(false);
+    const dispatch = useDispatch();
+    const LoginProcess = form => {
+        dispatch(loginAction(form));
+    };
     return (
         <ScrollView>
             <View style={styles.content}>
@@ -45,7 +51,8 @@ const Login = ({navigation}) => {
                 <View style={styles.forms}>
                     <Formik
                         initialValues={{email: '', password: ''}}
-                        validationSchema={loginSchemaValidation}>
+                        validationSchema={loginSchemaValidation}
+                        onSubmit={LoginProcess}>
                         {({
                             handleChange,
                             handleBlur,
@@ -64,6 +71,7 @@ const Login = ({navigation}) => {
                                             }}
                                             onChangeText={handleChange('email')}
                                             onBlur={handleBlur('email')}
+                                            value={values.email}
                                             placeholder="Input your Email"
                                         />
                                     </View>
@@ -110,6 +118,7 @@ const Login = ({navigation}) => {
                                                 'password',
                                             )}
                                             onBlur={handleBlur('password')}
+                                            value={values.password}
                                             placeholder="Input your Password"
                                         />
                                     </View>
@@ -123,9 +132,7 @@ const Login = ({navigation}) => {
                                     <View style={styles.fifthComponent}>
                                         <Button
                                             style={{width: '90%'}}
-                                            onPress={() =>
-                                                navigation.navigate('Home')
-                                            }>
+                                            onPress={handleSubmit}>
                                             Submit
                                         </Button>
                                     </View>
