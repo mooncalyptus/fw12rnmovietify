@@ -13,7 +13,9 @@ import {Formik} from 'formik';
 import * as Yup from 'yup';
 import YupPassword from 'yup-password';
 import {useDispatch} from 'react-redux';
-import {loginAction} from '../src/redux/reducers/auth';
+import {login as loginAction} from '../src/redux/reducers/auth';
+import jwt_decode from 'jwt-decode';
+import http from '../src/helpers/http';
 
 YupPassword(Yup);
 const loginSchemaValidation = Yup.object().shape({
@@ -33,8 +35,18 @@ const loginSchemaValidation = Yup.object().shape({
 const Login = ({navigation}) => {
     const [show, setShow] = React.useState(false);
     const dispatch = useDispatch();
-    const LoginProcess = form => {
-        dispatch(loginAction(form));
+    // const LoginProcess = form => {
+    //     dispatch(loginAction(form));
+    // };
+    const LoginProcess = async value => {
+        try {
+            const response = await http().post('/auth/login', value);
+            const token = response?.data?.results?.token;
+            const decode = jwt_decode(token);
+            dispatch(loginAction({token}));
+        } catch (error) {
+            console.log(error);
+        }
     };
     return (
         <ScrollView>

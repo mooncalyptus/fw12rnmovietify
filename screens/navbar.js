@@ -10,7 +10,9 @@ import {Pressable, Box, Input, Stack, HStack, Divider} from 'native-base';
 import Icon from 'react-native-vector-icons/Feather';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch} from 'react-redux';
-import {logoutAction} from '../src/redux/reducers/auth';
+// import {logoutAction} from '../src/redux/reducers/auth';
+import http from '../src/helpers/http';
+import {logout as logoutAction} from '../src/redux/reducers/auth';
 
 const Navbar = () => {
     const navigation = useNavigation();

@@ -8,18 +8,17 @@ const auth = createSlice({
     name: 'auth',
     initialState,
     reducers: {
-        login: (state, action) => {
-            const {email, password} = action.payload;
-            if (email === 'admin@mail.com' && password === 'Login1234@') {
-                state.token = 'gotToken';
-            }
+        login: (state, {payload}) => {
+            state.token = payload.token;
         },
-        logout: () => {
-            return initialState;
+        logout: (state, action) => {
+            state.token = null;
         },
     },
+    extraReducers: (build) => {},
 });
 
-export const {login: loginAction, logout: logoutAction} = auth.actions;
+// export const {login: loginAction, logout: logoutAction} = auth.actions;
+export const {logout, login} = auth.actions;
 
 export default auth.reducer;
