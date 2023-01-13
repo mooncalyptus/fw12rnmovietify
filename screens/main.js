@@ -42,6 +42,41 @@ const Main = () => {
                         {token && (
                             <>
                                 <Stack.Screen name="Home" component={Home} />
+                                <Stack.Screen
+                                    name="Profile"
+                                    component={Profile}
+                                    options={{title: 'Details Account'}}
+                                />
+                                <Stack.Screen
+                                    name="ViewAll"
+                                    component={ViewAll}
+                                    options={{title: 'View All Movies'}}
+                                />
+                                <Stack.Screen
+                                    name="MovieDetails"
+                                    component={MovieDetails}
+                                    options={{title: 'Movie Details'}}
+                                />
+                                <Stack.Screen
+                                    name="OrderPage"
+                                    component={OrderPage}
+                                    options={{title: 'Order Page'}}
+                                />
+                                <Stack.Screen
+                                    name="PaymentPage"
+                                    component={PaymentPage}
+                                    options={{title: 'Payment Page'}}
+                                />
+                                <Stack.Screen
+                                    name="OrderHistory"
+                                    component={OrderHistory}
+                                    options={{title: 'Order History'}}
+                                />
+                                <Stack.Screen
+                                    name="TicketResult"
+                                    component={TicketResult}
+                                    options={{title: 'Ticket Result'}}
+                                />
                             </>
                         )}
                         <Stack.Screen
@@ -55,44 +90,9 @@ const Main = () => {
                             options={{title: 'Reset Password'}}
                         />
                         <Stack.Screen
-                            name="ViewAll"
-                            component={ViewAll}
-                            options={{title: 'View All Movies'}}
-                        />
-                        <Stack.Screen
-                            name="MovieDetails"
-                            component={MovieDetails}
-                            options={{title: 'Movie Details'}}
-                        />
-                        <Stack.Screen
-                            name="OrderPage"
-                            component={OrderPage}
-                            options={{title: 'Order Page'}}
-                        />
-                        <Stack.Screen
-                            name="PaymentPage"
-                            component={PaymentPage}
-                            options={{title: 'Payment Page'}}
-                        />
-                        <Stack.Screen
-                            name="OrderHistory"
-                            component={OrderHistory}
-                            options={{title: 'Order History'}}
-                        />
-                        <Stack.Screen
-                            name="TicketResult"
-                            component={TicketResult}
-                            options={{title: 'Ticket Result'}}
-                        />
-                        <Stack.Screen
                             name="Navbar"
                             component={Navbar}
                             options={{headerShown: false}}
-                        />
-                        <Stack.Screen
-                            name="Profile"
-                            component={Profile}
-                            options={{title: 'Details Account'}}
                         />
                     </Stack.Navigator>
                 </NavigationContainer>

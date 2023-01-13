@@ -9,10 +9,16 @@ import {
 import {Pressable, Box, Input, Stack, HStack, Divider} from 'native-base';
 import Icon from 'react-native-vector-icons/Feather';
 import {useNavigation} from '@react-navigation/native';
+import {useDispatch} from 'react-redux';
+import {logoutAction} from '../src/redux/reducers/auth';
 
 const Navbar = () => {
     const navigation = useNavigation();
     const [click, setClick] = React.useState(false);
+    const dispatch = useDispatch();
+    const LogoutProcess = () => {
+        dispatch(logoutAction());
+    };
     return (
         <Box backgroundColor="white">
             <HStack justifyContent="space-between" px="5">
@@ -68,8 +74,7 @@ const Navbar = () => {
                             <Text>Profile</Text>
                         </TouchableOpacity>
                         <Divider my="2" />
-                        <TouchableOpacity
-                            onPress={() => navigation.navigate('Login')}>
+                        <TouchableOpacity onPress={() => LogoutProcess()}>
                             <Text>Logout</Text>
                         </TouchableOpacity>
                         <Divider my="2" />
