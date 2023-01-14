@@ -13,3 +13,20 @@ export const loginAction = createAsyncThunk(
         }
     },
 );
+
+export const registerAction = createAsyncThunk(
+    'auth/registerAction',
+    async ({firstName, lastName, phoneNumber, email, password, cb}) => {
+        try {
+            const {data} = await http().post('/auth/register', {
+                firstName,
+                lastName,
+                phoneNumber,
+            });
+            cb();
+            return data.results;
+        } catch (error) {
+            return error.response.data.message;
+        }
+    },
+);

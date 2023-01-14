@@ -35,9 +35,6 @@ const loginSchemaValidation = Yup.object().shape({
 const Login = ({navigation}) => {
     const [show, setShow] = React.useState(false);
     const dispatch = useDispatch();
-    // const LoginProcess = form => {
-    //     dispatch(loginAction(form));
-    // };
     const LoginProcess = async value => {
         try {
             const response = await http().post('/auth/login', value);

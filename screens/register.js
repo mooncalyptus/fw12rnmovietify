@@ -12,15 +12,17 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
 import YupPassword from 'yup-password';
+import {useDispatch} from 'react-redux';
+import {register as registerAction} from '../src/redux/reducers/auth';
+import http from '../src/helpers/http';
+import jwt_decode from 'jwt-decode';
 
 YupPassword(Yup);
 const phoneRegExpID = /^(^08)(\d{8,10})$/;
 const SchemaValidation = Yup.object().shape({
     firstName: Yup.string().required('First Name is required'),
     lastName: Yup.string().required('Last Name is required'),
-    phoneNumber: Yup.string()
-        .matches(phoneRegExpID, 'Invalid phone number')
-        .required('Required'),
+    phoneNumber: Yup.string().required('Phone Number required'),
     email: Yup.string()
         .email('Please enter valid email')
         .required('Email address is Required'),
@@ -36,6 +38,17 @@ const SchemaValidation = Yup.object().shape({
 
 const Register = ({navigation}) => {
     const [show, setShow] = React.useState(false);
+    const dispatch = useDispatch();
+    const RegisterProcess = async value => {
+        try {
+            const response = await http().post('/auth/register', value);
+            const token = response?.data?.results?.token;
+            const decode = jwt_decode(token);
+            dispatch(registerAction({token}));
+        } catch (error) {
+            console.log(error);
+        }
+    };
     return (
         <ScrollView style={styles.container}>
             <View style={styles.content}>
@@ -56,7 +69,8 @@ const Register = ({navigation}) => {
                             email: '',
                             password: '',
                         }}
-                        validationSchema={SchemaValidation}>
+                        validationSchema={SchemaValidation}
+                        onSubmit={RegisterProcess}>
                         {({
                             handleChange,
                             handleBlur,
@@ -81,6 +95,7 @@ const Register = ({navigation}) => {
                                                 'firstName',
                                             )}
                                             onBlur={handleBlur('firstName')}
+                                            value={values.firstName}
                                             placeholder="Input your First Name"
                                         />
                                     </View>
@@ -106,6 +121,7 @@ const Register = ({navigation}) => {
                                                 'lastName',
                                             )}
                                             onBlur={handleBlur('lastName')}
+                                            value={values.lastName}
                                             placeholder="Input your Last Name"
                                         />
                                     </View>
@@ -131,6 +147,7 @@ const Register = ({navigation}) => {
                                                 'phoneNumber',
                                             )}
                                             onBlur={handleBlur('phoneNumber')}
+                                            value={values.phoneNumber}
                                             placeholder="Input your Phone Number"
                                         />
                                     </View>
@@ -154,6 +171,7 @@ const Register = ({navigation}) => {
                                             }}
                                             onChangeText={handleChange('email')}
                                             onBlur={handleBlur('email')}
+                                            value={values.email}
                                             placeholder="Input your Email"
                                         />
                                     </View>
@@ -189,7 +207,6 @@ const Register = ({navigation}) => {
                                                         }
                                                         size={25}
                                                         mr="2"
-                                                        // style={styles.iconPassword}
                                                         color="muted.400"
                                                     />
                                                 </Pressable>
@@ -198,6 +215,7 @@ const Register = ({navigation}) => {
                                                 'password',
                                             )}
                                             onBlur={handleBlur('password')}
+                                            value={values.password}
                                             placeholder="Input your Password"
                                         />
                                     </View>
@@ -209,15 +227,14 @@ const Register = ({navigation}) => {
                                         </View>
                                     )}
                                     <View style={styles.inputComponent}>
-                                        <Button style={{width: '90%'}}>
+                                        <Button
+                                            style={{width: '90%'}}
+                                            onPress={handleSubmit}>
                                             Sign Up
                                         </Button>
                                     </View>
                                     <View style={styles.textSignIn}>
-                                        <TouchableOpacity
-                                            onPress={() =>
-                                                navigation.navigate('Login')
-                                            }>
+                                        <TouchableOpacity>
                                             <Text>
                                                 Already have account ?{' '}
                                                 <Text style={styles.signIn}>
