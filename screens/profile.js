@@ -10,19 +10,25 @@ import {
     Box,
     Stack,
     Divider,
-    HStack,
-    Alert,
-    VStack,
-    IconButton,
-    CloseIcon,
     Pressable,
 } from 'native-base';
 import Icon from 'react-native-vector-icons/Feather';
+import axios from 'axios';
+import http from '../src/helpers/http';
+import {useSelector} from 'react-redux';
 import Navbar from './navbar';
 import Footer from '../src/components/footer';
 
 const Profile = ({navigation}) => {
     const [show, setShow] = React.useState(false);
+    const [profile, setProfile] = React.useState(false);
+    const token = useSelector(state => state.auth.token);
+
+    // const fetchProfile = async () =>{
+    //     try{
+    //         const response = await http().get('/profile')
+    //     }
+    // }
     return (
         <ScrollView>
             <Navbar />

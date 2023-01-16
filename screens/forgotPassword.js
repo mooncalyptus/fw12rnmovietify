@@ -4,6 +4,7 @@ import {Input, FormControl, Stack, Text, Pressable, Button} from 'native-base';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
 import YupPassword from 'yup-password';
+import http from '../src/helpers/http';
 
 const SchemaValidation = Yup.object().shape({
     email: Yup.string()
@@ -12,6 +13,16 @@ const SchemaValidation = Yup.object().shape({
 });
 
 const ForgotPassword = ({navigation}) => {
+    const [email, setEmail] = React.useState('');
+
+    const requestForgotPassword = async event => {
+        try {
+            const response = await http().post('/auth/forgotPassword', {email});
+            navigation.navigate('/login');
+        } catch (error) {
+            console.log(error.response);
+        }
+    };
     return (
         <View style={styles.container}>
             <Image
@@ -27,7 +38,8 @@ const ForgotPassword = ({navigation}) => {
             <View style={styles.desc}>
                 <Formik
                     initialValues={{email: ''}}
-                    validationSchema={SchemaValidation}>
+                    validationSchema={SchemaValidation}
+                    onSubmit={requestForgotPassword}>
                     {({
                         handleChange,
                         handleBlur,
@@ -46,6 +58,10 @@ const ForgotPassword = ({navigation}) => {
                                         }}
                                         onChangeText={handleChange('email')}
                                         onBlur={handleBlur('email')}
+                                        value={values.email}
+                                        onChange={event =>
+                                            setEmail(event.target.values)
+                                        }
                                         placeholder="Input your Email"
                                     />
                                     {errors.email && (
@@ -59,9 +75,7 @@ const ForgotPassword = ({navigation}) => {
                                 <View style={styles.buttonComponent}>
                                     <Button
                                         style={{width: '90%'}}
-                                        onPress={() =>
-                                            navigation.navigate('SetPassword')
-                                        }>
+                                        onPress={handleSubmit}>
                                         Submit
                                     </Button>
                                 </View>

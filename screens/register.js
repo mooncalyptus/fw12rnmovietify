@@ -18,7 +18,6 @@ import http from '../src/helpers/http';
 import jwt_decode from 'jwt-decode';
 
 YupPassword(Yup);
-const phoneRegExpID = /^(^08)(\d{8,10})$/;
 const SchemaValidation = Yup.object().shape({
     firstName: Yup.string().required('First Name is required'),
     lastName: Yup.string().required('Last Name is required'),
@@ -49,6 +48,7 @@ const Register = ({navigation}) => {
             console.log(error);
         }
     };
+
     return (
         <ScrollView style={styles.container}>
             <View style={styles.content}>
