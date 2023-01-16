@@ -1,9 +1,9 @@
 import React from 'react';
 import {View, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import {Input, FormControl, Stack, Text, Pressable, Button} from 'native-base';
+import {useNavigation} from '@react-navigation/native';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
-import YupPassword from 'yup-password';
 import http from '../src/helpers/http';
 
 const SchemaValidation = Yup.object().shape({
@@ -11,18 +11,20 @@ const SchemaValidation = Yup.object().shape({
         .email('Please enter valid email')
         .required('Email address is Required'),
 });
-
-const ForgotPassword = ({navigation}) => {
-    const [email, setEmail] = React.useState('');
-
-    const requestForgotPassword = async event => {
+const ForgotPassword = () => {
+    const navigation = useNavigation();
+    const requestForgotPassword = async values => {
         try {
-            const response = await http().post('/auth/forgotPassword', {email});
-            navigation.navigate('/login');
+            const response = await http().post('/auth/forgotPassword', values);
+            setTimeout(() => {
+                navigation.navigate('SetPassword');
+            }, 3000);
+            // console.log(response);
         } catch (error) {
             console.log(error.response);
         }
     };
+
     return (
         <View style={styles.container}>
             <Image
@@ -59,9 +61,9 @@ const ForgotPassword = ({navigation}) => {
                                         onChangeText={handleChange('email')}
                                         onBlur={handleBlur('email')}
                                         value={values.email}
-                                        onChange={event =>
-                                            setEmail(event.target.values)
-                                        }
+                                        // onChange={event =>
+                                        //     setEmail(event.target.values)
+                                        // }
                                         placeholder="Input your Email"
                                     />
                                     {errors.email && (

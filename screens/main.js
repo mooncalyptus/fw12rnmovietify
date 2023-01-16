@@ -15,8 +15,10 @@ import TicketResult from './ticketResult';
 import Navbar from './navbar';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {useSelector} from 'react-redux';
 
+const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 const Main = () => {
     const token = useSelector(state => state.auth.token);
@@ -36,6 +38,11 @@ const Main = () => {
                                     name="Register"
                                     component={Register}
                                     options={{title: 'Sign Up'}}
+                                />
+                                <Stack.Screen
+                                    name="SetPassword"
+                                    component={SetPassword}
+                                    options={{title: 'Reset Password'}}
                                 />
                             </>
                         )}
@@ -83,11 +90,6 @@ const Main = () => {
                             name="ForgotPassword"
                             component={ForgotPassword}
                             options={{title: 'Forgot Password'}}
-                        />
-                        <Stack.Screen
-                            name="SetPassword"
-                            component={SetPassword}
-                            options={{title: 'Reset Password'}}
                         />
                         <Stack.Screen
                             name="Navbar"
