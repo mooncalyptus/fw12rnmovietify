@@ -24,10 +24,10 @@ const GridSeat = () => {
                     width="3/4"
                     borderRadius="md"
                     height="3"
-                    backgroundColor="#9570FE"
+                    backgroundColor="#62B6B7"
                 />
                 <Box>
-                    <Stack direction="row" space={6} px="5" pt="8">
+                    <Stack direction="row" space={3} px="2" pt="8">
                         {/* Konten Grid Seat */}
                         <Box>
                             <Stack direction="column" space={3}>
@@ -141,19 +141,19 @@ const GridSeat = () => {
                                     <Box
                                         w="14"
                                         h="14"
-                                        backgroundColor="#5F2EEA"
+                                        backgroundColor="#62B6B7"
                                         borderRadius="2"
                                     />
                                     <Box
                                         w="14"
                                         h="14"
-                                        backgroundColor="#5F2EEA"
+                                        backgroundColor="#62B6B7"
                                         borderRadius="2"
                                     />
                                     <Box
                                         w="14"
                                         h="14"
-                                        backgroundColor="#5F2EEA"
+                                        backgroundColor="#62B6B7"
                                         borderRadius="2"
                                     />
                                     <Box
@@ -700,7 +700,7 @@ const GridSeat = () => {
                                 <Box
                                     w="14"
                                     h="14"
-                                    backgroundColor="#5F2EEA"
+                                    backgroundColor="#62B6B7"
                                     borderRadius="2"
                                 />
                                 <Text>Selected</Text>
