@@ -19,6 +19,7 @@ import {
     Box,
     VStack,
     CloseIcon,
+    Collapse,
 } from 'native-base';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {Formik} from 'formik';
@@ -57,15 +58,21 @@ const Register = ({navigation}) => {
     const RegisterProcess = async value => {
         try {
             const response = await http().post('/auth/register', value);
+            console.log('success');
+            setAlertSuccess(true);
+            // setTimeout(() => {
+            //     setAlertSuccess(true);
+            // }, 3000);
             const token = response?.data?.results?.token;
             const decode = jwt_decode(token);
             dispatch(registerAction({token}));
-            setTimeout(() => {
-                setAlertSuccess(true);
-            }, 3000);
         } catch (error) {
-            // setErrorMessage(error?.response?.data?.message);
+            setErrorMessage(error?.response?.data?.message);
             setAlertError(true);
+            setTimeout(() => {
+                setAlertError(false);
+                setClick(true);
+            }, 3000);
             console.log(error);
         }
     };
@@ -102,97 +109,47 @@ const Register = ({navigation}) => {
                             <FormControl
                                 isRequired
                                 onChange={() => setAlertError(false)}>
+                                {alertSuccess ? (
+                                    <Button>Success</Button>
+                                ) : (
+                                    false
+                                )}
                                 {alertError ? (
-                                    <Alert maxW="400" status="error">
-                                        <VStack
-                                            space={1}
-                                            flexShrink={1}
-                                            w="100%">
-                                            <HStack
+                                    <Collapse isOpen={click}>
+                                        <Alert maxW="300" status="error">
+                                            <VStack
+                                                space={1}
                                                 flexShrink={1}
-                                                space={2}
-                                                alignItems="center"
-                                                justifyContent="space-between">
+                                                w="100%">
                                                 <HStack
                                                     flexShrink={1}
                                                     space={2}
-                                                    alignItems="center">
-                                                    <Alert.Icon />
-                                                    <Text
-                                                        fontSize="md"
-                                                        fontWeight="medium"
-                                                        _dark={{
-                                                            color: 'coolGray.800',
-                                                        }}>
-                                                        {/* {errorMessage} */}
-                                                        Wrong Email / Password
-                                                    </Text>
+                                                    alignItems="center"
+                                                    justifyContent="space-between">
+                                                    <HStack
+                                                        flexShrink={1}
+                                                        space={2}
+                                                        alignItems="center">
+                                                        <Alert.Icon />
+                                                        <Text
+                                                            fontSize="md"
+                                                            fontWeight="medium"
+                                                            _dark={{
+                                                                color: 'coolGray.800',
+                                                            }}>
+                                                            {/* {errorMessage} */}
+                                                            Email already
+                                                            registered
+                                                        </Text>
+                                                    </HStack>
                                                 </HStack>
-                                                <IconButton
-                                                    variant="unstyled"
-                                                    _focus={{
-                                                        borderWidth: 0,
-                                                    }}
-                                                    icon={
-                                                        <CloseIcon size="3" />
-                                                    }
-                                                    _icon={{
-                                                        color: 'coolGray.600',
-                                                    }}
-                                                    onPress={() =>
-                                                        setClick(false)
-                                                    }
-                                                />
-                                            </HStack>
-                                        </VStack>
-                                    </Alert>
+                                            </VStack>
+                                        </Alert>
+                                    </Collapse>
                                 ) : (
                                     false
                                 )}
 
-                                {alertSuccess ? (
-                                    <Alert w="100%" status="success">
-                                        <VStack
-                                            space={2}
-                                            flexShrink={1}
-                                            w="100%">
-                                            <HStack
-                                                flexShrink={1}
-                                                space={1}
-                                                alignItems="center"
-                                                justifyContent="space-between">
-                                                <HStack
-                                                    space={2}
-                                                    flexShrink={1}
-                                                    alignItems="center">
-                                                    <Alert.Icon />
-                                                    <Text
-                                                        fontSize="md"
-                                                        fontWeight="medium"
-                                                        _dark={{
-                                                            color: 'coolGray.800',
-                                                        }}>
-                                                        Register Successfully
-                                                    </Text>
-                                                </HStack>
-                                                <IconButton
-                                                    variant="unstyled"
-                                                    _focus={{
-                                                        borderWidth: 0,
-                                                    }}
-                                                    icon={
-                                                        <CloseIcon size="3" />
-                                                    }
-                                                    _icon={{
-                                                        color: 'coolGray.600',
-                                                    }}
-                                                />
-                                            </HStack>
-                                        </VStack>
-                                    </Alert>
-                                ) : (
-                                    false
-                                )}
                                 <Stack>
                                     <View>
                                         <FormControl.Label>

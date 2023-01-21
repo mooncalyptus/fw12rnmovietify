@@ -26,10 +26,13 @@ import {logout as logoutAction} from '../src/redux/reducers/auth';
 const profileSchemaValidation = Yup.object().shape({
     firstName: Yup.string().required('First Name is Required'),
     lastName: Yup.string().required('Last Name is Required'),
+    phoneNumber: Yup.string().required('Phone Number is required'),
     email: Yup.string()
         .email('Please enter valid email')
         .required('Email address is Required'),
-    phoneNumber: Yup.string().required('Phone Number is required'),
+});
+
+const passwordSchemaValidation = Yup.object().shape({
     password: Yup.string()
         .password()
         .required('Enter password')
@@ -43,6 +46,7 @@ const profileSchemaValidation = Yup.object().shape({
         'Passwords must match',
     ),
 });
+
 const Profile = () => {
     const navigation = useNavigation();
     const [show, setShow] = React.useState(false);
@@ -64,14 +68,31 @@ const Profile = () => {
     };
     // console.log(profile);
 
-    const UpdateProfile = async value => {
+    const updateProfile = async value => {
         try {
+            const {firstName, lastName, phoneNumber, email} = value;
             console.log(value);
             const update = await http(token).patch('/profile', value);
+            console.log(update);
             return update;
             // console.log('success');
         } catch (error) {
             if (error) {
+                console.log(error.response);
+                throw error;
+            }
+        }
+    };
+
+    const updatePassword = async value => {
+        // console.log('success');
+        try {
+            console.log(value);
+            const update = await http(token).patch('/profile', value);
+            return update;
+        } catch (error) {
+            if (error) {
+                console.log(error.response);
                 throw error;
             }
         }
@@ -165,13 +186,14 @@ const Profile = () => {
                                 initialValues={{
                                     firstName: profile.firstName,
                                     lastName: profile.lastName,
-                                    email: profile.email,
                                     phoneNumber: profile.phoneNumber,
-                                    // password: '',
-                                    // confirmPassword: '',
+                                    email: profile.email,
+                                    password: '',
+                                    confirmPassword: '',
                                 }}
                                 validationSchema={profileSchemaValidation}
-                                onSubmit={UpdateProfile}>
+                                enableReinitialize
+                                onSubmit={updateProfile}>
                                 {({
                                     handleChange,
                                     handleBlur,
@@ -187,12 +209,10 @@ const Profile = () => {
                                             <Input
                                                 variant="outline"
                                                 placeholder="First Name"
-                                                onChangeText={handleChange(
-                                                    'firstName',
-                                                )}
+                                                onChangeText={handleChange('firstName')}
                                                 onBlur={handleBlur('firstName')}
-                                                // value={profile.firstName}
-                                                defaultValue={profile.firstName}
+                                                value={values.firstName}
+                                                // defaultValue={profile.firstName}
                                             />
                                             {errors.firstName && (
                                                 <View
@@ -210,12 +230,10 @@ const Profile = () => {
                                             <Input
                                                 variant="outline"
                                                 placeholder="Last Name"
-                                                onChangeText={handleChange(
-                                                    'lastName',
-                                                )}
+                                                onChangeText={handleChange('lastName')}
                                                 onBlur={handleBlur('lastName')}
-                                                // value={values.lastName}
-                                                defaultValue={profile.lastName}
+                                                value={values.lastName}
+                                                // defaultValue={profile.lastName}
                                             />
                                             {errors.lastName && (
                                                 <View
@@ -227,45 +245,20 @@ const Profile = () => {
                                                     </FormControl.HelperText>
                                                 </View>
                                             )}
-                                            <FormControl.Label>
-                                                Email
-                                            </FormControl.Label>
-                                            <Input
-                                                variant="outline"
-                                                placeholder="Email"
-                                                onChangeText={handleChange(
-                                                    'email',
-                                                )}
-                                                onBlur={handleBlur('email')}
-                                                // value={values.email}
-                                                defaultValue={profile.email}
-                                            />
-                                            {errors.email && (
-                                                <View
-                                                    style={
-                                                        styles.fourthComponent
-                                                    }>
-                                                    <FormControl.HelperText>
-                                                        {errors.email}
-                                                    </FormControl.HelperText>
-                                                </View>
-                                            )}
-                                            <FormControl.Label>
+                                           <FormControl.Label>
                                                 Phone Number
                                             </FormControl.Label>
                                             <Input
                                                 variant="outline"
                                                 placeholder="Phone Number"
-                                                onChangeText={handleChange(
-                                                    'phoneNumber',
-                                                )}
+                                                onChangeText={handleChange('phoneNumber')}
                                                 onBlur={handleBlur(
-                                                    'phoneNumber',
+                                                    'phoneNumber'
                                                 )}
-                                                // value={values.phoneNumber}
-                                                defaultValue={
-                                                    profile.phoneNumber
-                                                }
+                                                value={values.phoneNumber}
+                                                // defaultValue={
+                                                //     profile.phoneNumber
+                                                // }
                                             />
                                             {errors.phoneNumber && (
                                                 <View
@@ -277,105 +270,43 @@ const Profile = () => {
                                                     </FormControl.HelperText>
                                                 </View>
                                             )}
-                                            {/* <FormControl.Label>
-                                                New Password
+                                            <FormControl.Label>
+                                                Email
                                             </FormControl.Label>
                                             <Input
-                                                w={{
-                                                    base: '90%',
-                                                    md: '25%',
-                                                }}
-                                                type={
-                                                    show ? 'text' : 'password'
-                                                }
-                                                InputRightElement={
-                                                    <Pressable
-                                                        onPress={() =>
-                                                            setShow(!show)
-                                                        }>
-                                                        <Icon
-                                                            name={
-                                                                show
-                                                                    ? 'eye'
-                                                                    : 'eye-off'
-                                                            }
-                                                            size={20}
-                                                            mr="2"
-                                                            style={
-                                                                styles.iconPassword
-                                                            }
-                                                            color="muted.400"
-                                                        />
-                                                    </Pressable>
-                                                }
-                                                placeholder="Input your Password"
-                                                onChangeText={handleChange(
-                                                    'password',
-                                                )}
+                                                variant="outline"
+                                                placeholder="Email"
+                                                onChangeText={handleChange('email')}
+                                                onBlur={handleBlur('email')}
+                                                value={values.email}
+                                                // defaultValue={profile.email}
+                                            />
+                                            {errors.email && (
+                                                <View
+                                                    style={
+                                                        styles.fourthComponent
+                                                    }>
+                                                    <FormControl.HelperText>
+                                                        {errors.email}
+                                                    </FormControl.HelperText>
+                                                </View>
+                                            )}
+                                            <Input
+                                                isDisabled={true}
+                                                variant="unstyled"
+                                                // placeholder="Unstyled"
+                                                onChangeText={handleChange('password')}
                                                 onBlur={handleBlur('password')}
                                                 value={values.password}
-                                                // defaultValue={profile.password}
-                                            />
-                                            {errors.password && (
-                                                <View
-                                                    style={
-                                                        styles.fourthComponent
-                                                    }>
-                                                    <FormControl.HelperText>
-                                                        {errors.password}
-                                                    </FormControl.HelperText>
-                                                </View>
-                                            )} */}
-                                            {/* <FormControl.Label>
-                                                Confirm Password
-                                            </FormControl.Label>
-                                            <Input
-                                                w={{
-                                                    base: '90%',
-                                                    md: '25%',
-                                                }}
-                                                type={
-                                                    show ? 'text' : 'password'
-                                                }
-                                                InputRightElement={
-                                                    <Pressable
-                                                        onPress={() =>
-                                                            setShow(!show)
-                                                        }>
-                                                        <Icon
-                                                            name={
-                                                                show
-                                                                    ? 'eye'
-                                                                    : 'eye-off'
-                                                            }
-                                                            size={20}
-                                                            mr="2"
-                                                            style={
-                                                                styles.iconPassword
-                                                            }
-                                                            color="muted.400"
-                                                        />
-                                                    </Pressable>
-                                                }
-                                                placeholder="Input your Password"
-                                                onChangeText={handleChange(
-                                                    'confirmPassword',
-                                                )}
-                                                onBlur={handleBlur(
-                                                    'confirmPassword',
-                                                )}
-                                                value={values.confirmPassword}
-                                            />
-                                            {errors.confirmPassword && (
-                                                <View
-                                                    style={
-                                                        styles.fourthComponent
-                                                    }>
-                                                    <FormControl.HelperText>
-                                                        {errors.confirmPassword}
-                                                    </FormControl.HelperText>
-                                                </View>
-                                            )} */}
+                                                />
+                                                <Input
+                                                isDisabled={true}
+                                                variant="unstyled"
+                                                // placeholder="Unstyled"
+                                                onChangeText={handleChange('confirmPassword')}
+                                                onBlur={handleBlur('confirmPassword')}
+                                                value={values.password}
+                                                />
                                         </Stack>
                                         <Stack
                                             justifyContent="center"
@@ -389,6 +320,121 @@ const Profile = () => {
                                 )}
                             </Formik>
                         </Stack>
+                    </Stack>
+                </Box>
+                <Box
+                    backgroundColor="white"
+                    mt="10"
+                    py="10"
+                    px="10"
+                    borderRadius="md">
+                    <Stack>
+                        <Stack>
+                            <Text>Account and Privacy</Text>
+                        </Stack>
+                        <Stack>
+                            <Divider my="2" />
+                        </Stack>
+                        <Formik
+                            initialValues={{
+                                password: '',
+                                confirmPassword: '',
+                            }}
+                            validationSchema={passwordSchemaValidation}
+                            enableReinitialize
+                            onSubmit={updatePassword}>
+                            {({
+                                handleChange,
+                                handleBlur,
+                                handleSubmit,
+                                errors,
+                                values,
+                                setFieldValue,
+                            }) => (
+                                <FormControl isInvalid>
+                                    <FormControl.Label>
+                                        New Password
+                                    </FormControl.Label>
+                                    <Input
+                                        w={{
+                                            base: '90%',
+                                            md: '25%',
+                                        }}
+                                        type={show ? 'text' : 'password'}
+                                        InputRightElement={
+                                            <Pressable
+                                                onPress={() => setShow(!show)}>
+                                                <Icon
+                                                    name={
+                                                        show ? 'eye' : 'eye-off'
+                                                    }
+                                                    size={20}
+                                                    mr="2"
+                                                    style={styles.iconPassword}
+                                                    color="muted.400"
+                                                />
+                                            </Pressable>
+                                        }
+                                        onChangeText={handleChange('password')}
+                                        onBlur={handleBlur('password')}
+                                        value={values.password}
+                                        placeholder="Input your Password"
+                                    />
+                                    {errors.password && (
+                                        <View style={styles.fourthComponent}>
+                                            <FormControl.HelperText>
+                                                {errors.password}
+                                            </FormControl.HelperText>
+                                        </View>
+                                    )}
+                                    <FormControl.Label>
+                                        Confirm Password
+                                    </FormControl.Label>
+                                    <Input
+                                        w={{
+                                            base: '90%',
+                                            md: '25%',
+                                        }}
+                                        type={show ? 'text' : 'password'}
+                                        InputRightElement={
+                                            <Pressable
+                                                onPress={() => setShow(!show)}>
+                                                <Icon
+                                                    name={
+                                                        show ? 'eye' : 'eye-off'
+                                                    }
+                                                    size={20}
+                                                    mr="2"
+                                                    style={styles.iconPassword}
+                                                    color="muted.400"
+                                                />
+                                            </Pressable>
+                                        }
+                                        placeholder="Input your Password"
+                                        onChangeText={handleChange(
+                                            'confirmPassword',
+                                        )}
+                                        onBlur={handleBlur('confirmPassword')}
+                                        value={values.confirmPassword}
+                                    />
+                                    {errors.confirmPassword && (
+                                        <View style={styles.fourthComponent}>
+                                            <FormControl.HelperText>
+                                                {errors.confirmPassword}
+                                            </FormControl.HelperText>
+                                        </View>
+                                    )}
+                                    <Stack
+                                        justifyContent="center"
+                                        alignItems="center"
+                                        my="18">
+                                        <Button onPress={handleSubmit}>
+                                            Update Changes
+                                        </Button>
+                                    </Stack>
+                                </FormControl>
+                            )}
+                        </Formik>
                     </Stack>
                 </Box>
             </Box>

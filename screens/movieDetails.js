@@ -4,9 +4,13 @@ import {Button, Select, CheckIcon, View, Stack, Box} from 'native-base';
 import Icon from 'react-native-vector-icons/Feather';
 import Navbar from './navbar';
 import Footer from '../src/components/footer';
+import DatePicker from 'react-native-date-picker';
 
 const MovieDetails = ({navigation}) => {
     const [service, setService] = React.useState('');
+    const [date, setDate] = React.useState(new Date());
+    const [open, setOpen] = React.useState(false);
+
     return (
         <ScrollView>
             <Navbar />
