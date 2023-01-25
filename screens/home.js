@@ -1,5 +1,5 @@
-import React from 'react';
-import {Image, StyleSheet, ScrollView} from 'react-native';
+import React, {useEffect} from 'react';
+import {StyleSheet, ScrollView, FlatList} from 'react-native';
 import {
     Button,
     Input,
@@ -10,37 +10,20 @@ import {
     VStack,
     Pressable,
     Text,
+    Stack,
+    Image,
 } from 'native-base';
 import Icon from 'react-native-vector-icons/Feather';
 import Navbar from './navbar';
 import Footer from '../src/components/footer';
-import image1 from '../src/images/image1.png';
-import image2 from '../src/images/image2.png';
-import image3 from '../src/images/image3.png';
-
-const movies = [
-    {
-        id: 1,
-        title: 'Spider-Man: Homecoming',
-        image: image1,
-        genre: 'Adventure, Action, Sci-Fi',
-    },
-    {
-        id: 2,
-        title: 'Lion King',
-        image: image2,
-        genre: 'Adventure, Action, Sci-Fi',
-    },
-    {
-        id: 3,
-        title: 'John Wick',
-        image: image3,
-        genre: 'Adventure, Action, Sci-Fi',
-    },
-];
+import http from '../src/helpers/http';
+import MonthList from './MonthList';
 
 const Home = ({navigation}) => {
     const [focus, setFocus] = React.useState(null);
+    const [nowShowing, setNowShowing] = React.useState([]);
+    const [upcoming, setUpcoming] = React.useState([]);
+
     const toggleFocus = id => {
         if (focus === id) {
             setFocus(null);
@@ -48,288 +31,292 @@ const Home = ({navigation}) => {
             setFocus(id);
         }
     };
+
+    const getUpcoming = async () => {
+        try {
+            const {data} = await http().get('/movies/upcoming');
+            setUpcoming(data.results);
+            // return data;
+        } catch (error) {
+            console.log(error.response);
+        }
+    };
+
+    const getNowShowing = async () => {
+        try {
+            const {data} = await http().get('/movies/nowShowing');
+            setNowShowing(data.results);
+        } catch (error) {
+            console.log(error.response);
+        }
+    };
+    // console.log(nowShowing[0].picture);
+    React.useEffect(() => {
+        getUpcoming();
+        getNowShowing();
+    }, []);
     return (
-        <ScrollView>
-            <View>
-                {/* Navbar */}
-                <Navbar />
-                {/* Navbar end */}
-
-                {/* Konten Header */}
-                <View mt="5">
-                    <Text style={{paddingHorizontal: 15}}>
-                        Nearest Cinema, Newest Movie,
-                    </Text>
-                    <Text
-                        px="15"
-                        fontSize="32"
-                        color="#97DECE"
-                        fontWeight="bold">
-                        Find Out Now
-                    </Text>
-                    <View style={{paddingHorizontal: 15}}>
-                        <Image
-                            source={require('../src/images/header.png')}
-                            style={{width: 350, height: 400, marginTop: 10}}
-                        />
-                    </View>
-                </View>
-                {/* Konten header end */}
-
-                {/* Konten Now Showing */}
-                <VStack space={2} backgroundColor="#97DECE" p="10">
-                    <HStack justifyContent="space-between">
-                        <Text color="white">Now Showing</Text>
-                        <Pressable
-                            onPress={() => navigation.navigate('ViewAll')}>
-                            <Text color="white">view all</Text>
-                        </Pressable>
-                    </HStack>
-                    <ScrollView height={focus ? 400 : 'auto'} horizontal>
-                        <HStack space={3}>
-                            {movies.map(o => (
-                                <Pressable onPress={() => toggleFocus(o.id)}>
-                                    <Box
-                                        borderWidth="1"
-                                        bg={
-                                            focus === o.id
-                                                ? 'white'
-                                                : 'transparent'
-                                        }
-                                        borderColor={
-                                            focus === o.id ? '#dedede' : 'white'
-                                        }
-                                        borderRadius="4"
-                                        p={focus === o.id ? '0' : '3'}>
-                                        <Image
-                                            source={o.image}
-                                            width="160px"
-                                            height="250px"
-                                            resizeMode="cover"
-                                        />
-                                        <Box position="relative">
-                                            {focus === o.id && (
-                                                <Box
-                                                    pt="5"
-                                                    px="2"
-                                                    pb="5"
-                                                    position="absolute"
-                                                    bg="white"
-                                                    width="full">
-                                                    <VStack
-                                                        space={2}
-                                                        justifyContent="center"
-                                                        alignItems="center">
-                                                        <Text>{o.title}</Text>
-                                                        <Text>{o.genre}</Text>
-                                                        <Button>Details</Button>
-                                                    </VStack>
-                                                </Box>
-                                            )}
-                                        </Box>
-                                    </Box>
-                                </Pressable>
-                            ))}
-                        </HStack>
-                    </ScrollView>
-                </VStack>
-                {/* Konten Now Showing end */}
-
-                {/* Konten Upcoming Movies */}
-                <View style={styles.contentUpcoming}>
-                    <View style={styles.textUpcoming}>
-                        <Text style={{flex: 1}}>Upcoming Movies</Text>
-                        <Text>View All</Text>
-                    </View>
-                    <ScrollView horizontal={true}>
-                        <View style={styles.upcomingMonth}>
-                            <Text>January</Text>
-                        </View>
-                        <View style={styles.upcomingMonth}>
-                            <Text>February</Text>
-                        </View>
-                        <View style={styles.upcomingMonth}>
-                            <Text>March</Text>
-                        </View>
-                        <View style={styles.upcomingMonth}>
-                            <Text>April</Text>
-                        </View>
-                        <View style={styles.upcomingMonth}>
-                            <Text>May</Text>
-                        </View>
-                        <View style={styles.upcomingMonth}>
-                            <Text>June</Text>
-                        </View>
-                        <View style={styles.upcomingMonth}>
-                            <Text>July</Text>
-                        </View>
-                        <View style={styles.upcomingMonth}>
-                            <Text>August</Text>
-                        </View>
-                        <View style={styles.upcomingMonth}>
-                            <Text>September</Text>
-                        </View>
-                        <View style={styles.upcomingMonth}>
-                            <Text>October</Text>
-                        </View>
-                        <View style={styles.upcomingMonth}>
-                            <Text>November</Text>
-                        </View>
-                        <View style={styles.upcomingMonth}>
-                            <Text>December</Text>
-                        </View>
-                    </ScrollView>
-                    <ScrollView horizontal={true}>
-                        <View style={styles.upcomingImage}>
-                            <Image
-                                source={require('../src/images/upcoming-1.png')}
-                            />
-                            <Text>Black Widow</Text>
-                            <Text>Action, Adventure, Sci-Fi</Text>
-                            <Button
-                                onPress={() => navigation.navigate('ViewAll')}>
-                                Details
-                            </Button>
-                        </View>
-                        <View style={styles.upcomingImage}>
-                            <Image
-                                source={require('../src/images/upcoming-2.png')}
-                            />
-                            <Text>The Witches</Text>
-                            <Text>Adventure, Comedy, Family</Text>
-                            <Button
-                                onPress={() => navigation.navigate('ViewAll')}>
-                                Details
-                            </Button>
-                        </View>
-                        <View style={styles.upcomingImage}>
-                            <Image
-                                source={require('../src/images/upcoming-3.png')}
-                            />
-                            <Text>Tenet</Text>
-                            <Text>Action, Adventure, Sci-Fi</Text>
-                            <Button
-                                onPress={() => navigation.navigate('ViewAll')}>
-                                Details
-                            </Button>
-                        </View>
-                    </ScrollView>
-                </View>
-                {/* Konten Upcoming end */}
-
-                {/* Konten mails */}
-                <View style={styles.mailsContent}>
-                    <View style={{paddingTop: 5}}>
-                        <Text style={{textAlign: 'center'}}>
-                            Be the vanguard of
-                        </Text>
-                        <Text style={{textAlign: 'center'}}>Moviegoers</Text>
-                    </View>
-                    <View style={{marginTop: 20, marginLeft: 30}}>
-                        <FormControl>
-                            <Input
-                                w={{
-                                    base: '90%',
-                                    md: '25%',
-                                }}
-                                placeholder="Type your Email"
-                            />
-                            <Button
-                                style={{width: '90%', marginTop: 15}}
-                                onPress={() =>
-                                    navigation.navigate('TicketResult')
-                                }>
-                                Join Now
-                            </Button>
-                            <Text
-                                style={{
-                                    paddingRight: 15,
-                                    paddingLeft: 5,
-                                    marginTop: 15,
-                                    paddingBottom: 20,
-                                }}>
-                                By joining you as a movietify member, we will
-                                always send you the latest updates via email .
+        <FlatList
+            style={{flex: 1}}
+            data={upcoming}
+            ListHeaderComponent={
+                <>
+                    <Navbar />
+                    <Box>
+                        <Stack px="15" pt="10" pb="80px">
+                            <Stack>
+                                <Text fontSize="20" color="#A0A3BD">
+                                    Nearest Cinema, Newest Movie,
+                                </Text>
+                                <Text
+                                    fontSize="32"
+                                    color="#97DECE"
+                                    fontWeight="bold">
+                                    Find Out Now
+                                </Text>
+                            </Stack>
+                            <Stack>
+                                <Image
+                                    source={require('../src/images/header.png')}
+                                    style={{
+                                        width: 350,
+                                        height: 400,
+                                        marginTop: 10,
+                                    }}
+                                />
+                            </Stack>
+                        </Stack>
+                        <Stack backgroundColor="#97DECE" pb="10">
+                            <Stack
+                                direction="row"
+                                justifyContent="space-between"
+                                p="10">
+                                <Text
+                                    fontSize="18"
+                                    fontWeight="bold"
+                                    color="white">
+                                    Now Showing
+                                </Text>
+                                <Stack pt="0.5">
+                                    <Text
+                                        fontSize="14"
+                                        fontWeight="bold"
+                                        color="white">
+                                        view all
+                                    </Text>
+                                </Stack>
+                            </Stack>
+                            <Stack>
+                                <FlatList
+                                    data={nowShowing}
+                                    horizontal={true}
+                                    renderItem={({item: nowShowing}) => {
+                                        return (
+                                            <Stack
+                                                space="3"
+                                                px="5"
+                                                pb="5"
+                                                height={focus ? 400 : 'auto'}>
+                                                <Pressable
+                                                    key={nowShowing.id}
+                                                    onPress={() =>
+                                                        toggleFocus(
+                                                            nowShowing.id,
+                                                        )
+                                                    }>
+                                                    <Box
+                                                        borderWidth="1"
+                                                        bg={
+                                                            focus ===
+                                                            nowShowing.id
+                                                                ? 'white'
+                                                                : 'transparent'
+                                                        }
+                                                        borderColor={
+                                                            focus ===
+                                                            nowShowing.id
+                                                                ? '#dedede'
+                                                                : 'white'
+                                                        }
+                                                        borderRadius="4"
+                                                        px={
+                                                            focus ===
+                                                            nowShowing.id
+                                                                ? '3'
+                                                                : '3'
+                                                        }
+                                                        pt={
+                                                            focus ===
+                                                            nowShowing.id
+                                                                ? '3'
+                                                                : '3'
+                                                        }
+                                                        pb={
+                                                            focus ===
+                                                            nowShowing.id
+                                                                ? '5'
+                                                                : '3'
+                                                        }>
+                                                        <Image
+                                                            source={{
+                                                                uri: nowShowing.picture,
+                                                            }}
+                                                            width="160px"
+                                                            height="250px"
+                                                            resizeMode="contain"
+                                                            alt="Alternate Text"
+                                                        />
+                                                        <Box position="relative">
+                                                            {focus ===
+                                                                nowShowing.id && (
+                                                                <Box
+                                                                    pt="5"
+                                                                    px="2"
+                                                                    // pb="5"
+                                                                    bg="white"
+                                                                    width="full">
+                                                                    <VStack
+                                                                        space={
+                                                                            2
+                                                                        }
+                                                                        justifyContent="center"
+                                                                        alignItems="center">
+                                                                        <Box
+                                                                            width="80px"
+                                                                            ml="2">
+                                                                            <Text>
+                                                                                {
+                                                                                    nowShowing.title
+                                                                                }
+                                                                            </Text>
+                                                                        </Box>
+                                                                        <Button
+                                                                            onPress={() =>
+                                                                                navigation.navigate(
+                                                                                    'MonthList',
+                                                                                )
+                                                                            }>
+                                                                            Details
+                                                                        </Button>
+                                                                    </VStack>
+                                                                </Box>
+                                                            )}
+                                                        </Box>
+                                                    </Box>
+                                                </Pressable>
+                                            </Stack>
+                                        );
+                                    }}
+                                />
+                            </Stack>
+                        </Stack>
+                    </Box>
+                    <Box>
+                        <HStack justifyContent="space-between" px="10" py="5">
+                            <Text fontSize="18" fontWeight="bold">
+                                Upcoming Movies
                             </Text>
-                        </FormControl>
-                    </View>
-                </View>
-                {/* Konten mails end */}
-
-                {/* Konten Footer */}
-                <Footer />
-                {/* Konten footer end */}
-            </View>
-        </ScrollView>
+                            <Text fontSize="14" fontWeight="bold" mt="0.5">
+                                view all
+                            </Text>
+                        </HStack>
+                        <Stack>
+                            <MonthList />
+                        </Stack>
+                        <Stack pb="10">
+                            <FlatList
+                                horizontal
+                                data={upcoming}
+                                renderItem={({item: upcoming}) => {
+                                    return (
+                                        <>
+                                            <Stack space="3">
+                                                <Box
+                                                    height="400px"
+                                                    mx="3"
+                                                    backgroundColor="white"
+                                                    borderWidth="1"
+                                                    borderColor="#dedede"
+                                                    borderRadius="4"
+                                                    px="3"
+                                                    py="3">
+                                                    <Image
+                                                        source={{
+                                                            uri: upcoming.picture,
+                                                        }}
+                                                        width="160px"
+                                                        height="250px"
+                                                        resizeMode="contain"
+                                                        alt="Alternate Text"
+                                                    />
+                                                    <Stack
+                                                        width="150px"
+                                                        alignItems="center"
+                                                        my="5">
+                                                        <Text>
+                                                            {upcoming?.title}
+                                                        </Text>
+                                                    </Stack>
+                                                    <Stack>
+                                                        <Button>Details</Button>
+                                                    </Stack>
+                                                </Box>
+                                            </Stack>
+                                        </>
+                                    );
+                                }}
+                            />
+                        </Stack>
+                    </Box>
+                    <Box mb="7">
+                        <Stack
+                            backgroundColor="white"
+                            justifyContent="center"
+                            space="5"
+                            py="6"
+                            px="5"
+                            mx="5"
+                            shadow="5"
+                            borderRadius="4">
+                            <Stack alignItems="center">
+                                <Text fontSize="14">
+                                    Be the vanguard of the
+                                </Text>
+                                <Text
+                                    fontSize="32"
+                                    fontWeight="bold"
+                                    color="#97DECE">
+                                    Moviegoers
+                                </Text>
+                            </Stack>
+                            <Stack alignItems="center">
+                                <Input
+                                    variant="outline"
+                                    placeholder="Enter your email"
+                                    width="90%"
+                                />
+                            </Stack>
+                            <Stack alignItems="center">
+                                <Button width="90%">Join Now</Button>
+                            </Stack>
+                            <Stack alignItems="center">
+                                <Text color="#6E7191">
+                                    By joining you as a Tickitz member,
+                                </Text>
+                                <Text color="#6E7191">
+                                    we will always send you the
+                                </Text>
+                                <Text color="#6E7191">
+                                    latest updates via email .
+                                </Text>
+                            </Stack>
+                        </Stack>
+                    </Box>
+                    <Footer />
+                </>
+            }
+        />
     );
 };
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-    navbar: {
-        flexDirection: 'row',
-        alignContent: 'center',
-        paddingHorizontal: 10,
-    },
-    logo: {
-        flex: 1,
-    },
-    menu: {
-        justifyContent: 'center',
-        alignContent: 'center',
-    },
-    nowShowingText: {
-        flexDirection: 'row',
-        paddingHorizontal: 15,
-    },
-    nowShowingFirst: {
-        flex: 1,
-    },
-    contentNowShowing: {
-        paddingHorizontal: 10,
-    },
-    imageSection: {
-        borderStyle: 'solid',
-        borderWidth: 1,
-        borderColor: 'white',
-        borderRadius: 4,
-        padding: 10,
-        marginLeft: 10,
-    },
-    upcomingImage: {
-        borderStyle: 'solid',
-        borderWidth: 1,
-        borderColor: 'black',
-        borderRadius: 4,
-        padding: 10,
-        marginLeft: 15,
-        marginTop: 15,
-        marginBottom: 30,
-    },
-    contentUpcoming: {
-        paddingHorizontal: 10,
-        marginTop: 40,
-    },
-    textUpcoming: {
-        flexDirection: 'row',
-        paddingHorizontal: 10,
-    },
-    upcomingMonth: {
-        borderStyle: 'solid',
-        borderRadius: 4,
-        borderWidth: 1,
-        borderColor: '#97DECE',
-        padding: 5,
-        marginLeft: 10,
-        marginTop: 10,
-    },
-    mailsContent: {
-        backgroundColor: '#F5F5F5',
-        marginTop: 40,
-        marginHorizontal: 10,
-        elevation: 10,
-    },
-});
 export default Home;

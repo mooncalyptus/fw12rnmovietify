@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useCallback} from 'react';
 import {StyleSheet, TouchableOpacity} from 'react-native';
 import {
     Button,
@@ -12,6 +12,8 @@ import {
     Divider,
     Pressable,
     View,
+    Modal,
+    HStack,
 } from 'native-base';
 import Icon from 'react-native-vector-icons/Feather';
 import http from '../src/helpers/http';
@@ -22,6 +24,7 @@ import Footer from '../src/components/footer';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
 import {logout as logoutAction} from '../src/redux/reducers/auth';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 
 const profileSchemaValidation = Yup.object().shape({
     firstName: Yup.string().required('First Name is Required'),
@@ -49,30 +52,34 @@ const passwordSchemaValidation = Yup.object().shape({
 
 const Profile = () => {
     const navigation = useNavigation();
+    const [preview, setPreview] = React.useState('');
+    const [showModal, setShowModal] = React.useState(false);
     const [show, setShow] = React.useState(false);
     const [profile, setProfile] = React.useState({});
     const dispatch = useDispatch();
     const LogoutProcess = () => {
         dispatch(logoutAction());
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const getProfile = useCallback(async () => {
+        const {data} = await http(token).get('/profile');
+        return data;
+    });
+
     const token = useSelector(state => state.auth.token);
-    // console.log(profile)
     useEffect(() => {
         getProfile().then(data => {
             setProfile(data?.results);
         });
-    }, []);
-    const getProfile = async () => {
-        const {data} = await http(token).get('/profile');
-        return data;
-    };
-    // console.log(profile);
+    }, [getProfile]);
+
 
     const updateProfile = async value => {
         try {
             const {firstName, lastName, phoneNumber, email} = value;
             console.log(value);
             const update = await http(token).patch('/profile', value);
+            getProfile();
             console.log(update);
             return update;
             // console.log('success');
@@ -85,10 +92,10 @@ const Profile = () => {
     };
 
     const updatePassword = async value => {
-        // console.log('success');
         try {
             console.log(value);
             const update = await http(token).patch('/profile', value);
+            getProfile();
             return update;
         } catch (error) {
             if (error) {
@@ -98,9 +105,101 @@ const Profile = () => {
         }
     };
 
+    const openGallery = async () => {
+        const result = await launchImageLibrary();
+        console.log(result);
+        setPreview(result.assets[0]);
+    };
+
+    const openCamera = async () => {
+        const result = await launchCamera();
+        console.log(result);
+        setPreview(result.assets[0]);
+    };
+
+    const uploadImage = async () => {
+        try {
+            if (preview?.fileName) {
+                // console.log('success');
+                const obj = {
+                    name: preview.fileName,
+                    type: preview.type,
+                    uri: preview.uri,
+                };
+                const form = new FormData();
+                form.append('picture', obj);
+                const update = await http(token).patch('/profile', form, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                });
+                setTimeout(() => {
+                    setShowModal(false);
+                }, 1000);
+                getProfile();
+            }
+        } catch (error) {
+            console.log(error.response);
+            throw error;
+        }
+    };
+
+    const uploadTest = () => {
+        console.log('success');
+    };
+
     return (
         <ScrollView>
             <Navbar />
+            <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
+                <Modal.Content maxWidth="400px">
+                    <Modal.CloseButton />
+                    <Modal.Header>Edit Profile</Modal.Header>
+                    <Modal.Body>
+                        <Stack alignItems="center" marginBottom="5">
+                            {preview ? (
+                                <Image
+                                    source={{uri: preview.uri}}
+                                    // style={{width: 140, height: 140}}
+                                    width="140"
+                                    height="140"
+                                    borderRadius="full"
+                                    alt="profile"
+                                />
+                            ) : (
+                                <Image
+                                    source={require('../src/images/profile.png')}
+                                    // style={{width: 140, height: 140}}
+                                    width="140"
+                                    height="140"
+                                    borderRadius="full"
+                                    alt="profile"
+                                />
+                            )}
+                        </Stack>
+                        <HStack space="2">
+                            <Button onPress={openGallery}>
+                                Select Picture
+                            </Button>
+                            <Button onPress={openCamera}>Using Camera</Button>
+                        </HStack>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button.Group space={2}>
+                            <Button
+                                variant="ghost"
+                                colorScheme="blueGray"
+                                onPress={() => {
+                                    setShowModal(false);
+                                }}>
+                                Cancel
+                            </Button>
+                            <Button onPress={uploadImage}>Upload</Button>
+                        </Button.Group>
+                    </Modal.Footer>
+                </Modal.Content>
+            </Modal>
+
             <Stack
                 backgroundColor="white"
                 direction="row"
@@ -165,7 +264,9 @@ const Profile = () => {
                                 <Text>Moviegoers</Text>
                             </Stack>
                             <Stack>
-                                <Button onPress={LogoutProcess}>Logout</Button>
+                                <Button onPress={() => setShowModal(true)}>
+                                    Edit Profile Picture
+                                </Button>
                             </Stack>
                         </Stack>
                     </Stack>
@@ -209,7 +310,9 @@ const Profile = () => {
                                             <Input
                                                 variant="outline"
                                                 placeholder="First Name"
-                                                onChangeText={handleChange('firstName')}
+                                                onChangeText={handleChange(
+                                                    'firstName'
+                                                )}
                                                 onBlur={handleBlur('firstName')}
                                                 value={values.firstName}
                                                 // defaultValue={profile.firstName}
@@ -230,7 +333,9 @@ const Profile = () => {
                                             <Input
                                                 variant="outline"
                                                 placeholder="Last Name"
-                                                onChangeText={handleChange('lastName')}
+                                                onChangeText={handleChange(
+                                                    'lastName',
+                                                )}
                                                 onBlur={handleBlur('lastName')}
                                                 value={values.lastName}
                                                 // defaultValue={profile.lastName}
@@ -245,15 +350,17 @@ const Profile = () => {
                                                     </FormControl.HelperText>
                                                 </View>
                                             )}
-                                           <FormControl.Label>
+                                            <FormControl.Label>
                                                 Phone Number
                                             </FormControl.Label>
                                             <Input
                                                 variant="outline"
                                                 placeholder="Phone Number"
-                                                onChangeText={handleChange('phoneNumber')}
+                                                onChangeText={handleChange(
+                                                    'phoneNumber',
+                                                )}
                                                 onBlur={handleBlur(
-                                                    'phoneNumber'
+                                                    'phoneNumber',
                                                 )}
                                                 value={values.phoneNumber}
                                                 // defaultValue={
@@ -276,7 +383,9 @@ const Profile = () => {
                                             <Input
                                                 variant="outline"
                                                 placeholder="Email"
-                                                onChangeText={handleChange('email')}
+                                                onChangeText={handleChange(
+                                                    'email',
+                                                )}
                                                 onBlur={handleBlur('email')}
                                                 value={values.email}
                                                 // defaultValue={profile.email}
@@ -295,18 +404,24 @@ const Profile = () => {
                                                 isDisabled={true}
                                                 variant="unstyled"
                                                 // placeholder="Unstyled"
-                                                onChangeText={handleChange('password')}
+                                                onChangeText={handleChange(
+                                                    'password',
+                                                )}
                                                 onBlur={handleBlur('password')}
                                                 value={values.password}
-                                                />
-                                                <Input
+                                            />
+                                            <Input
                                                 isDisabled={true}
                                                 variant="unstyled"
                                                 // placeholder="Unstyled"
-                                                onChangeText={handleChange('confirmPassword')}
-                                                onBlur={handleBlur('confirmPassword')}
+                                                onChangeText={handleChange(
+                                                    'confirmPassword',
+                                                )}
+                                                onBlur={handleBlur(
+                                                    'confirmPassword',
+                                                )}
                                                 value={values.password}
-                                                />
+                                            />
                                         </Stack>
                                         <Stack
                                             justifyContent="center"

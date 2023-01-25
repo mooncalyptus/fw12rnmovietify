@@ -1,7 +1,7 @@
 import React from 'react';
 import {NativeBaseProvider} from 'native-base';
 import Login from './login';
-import Home from './home';
+import Home from './Home';
 import Register from './register';
 import ForgotPassword from './forgotPassword';
 import SetPassword from './setPassword';
@@ -13,6 +13,7 @@ import Profile from './profile';
 import OrderHistory from './orderHistory';
 import TicketResult from './ticketResult';
 import Navbar from './navbar';
+import MonthList from './MonthList';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -48,7 +49,11 @@ const Main = () => {
                         )}
                         {token && (
                             <>
-                                <Stack.Screen name="Home" component={Home} />
+                                <Stack.Screen
+                                    name="Home"
+                                    component={Home}
+                                    options={{headerShown: false}}
+                                />
                                 <Stack.Screen
                                     name="Profile"
                                     component={Profile}
@@ -83,6 +88,12 @@ const Main = () => {
                                     name="TicketResult"
                                     component={TicketResult}
                                     options={{title: 'Ticket Result'}}
+                                />
+                                <Stack.Screen
+                                    name="MonthList"
+                                    component={MonthList}
+                                    // options={{title: 'Month List'}}
+                                    options={{headerShown: false}}
                                 />
                             </>
                         )}
