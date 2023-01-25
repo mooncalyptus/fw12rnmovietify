@@ -193,7 +193,7 @@ const Home = ({navigation}) => {
                                                                         <Button
                                                                             onPress={() =>
                                                                                 navigation.navigate(
-                                                                                    'MonthList',
+                                                                                    'ViewAll',
                                                                                 )
                                                                             }>
                                                                             Details
@@ -297,7 +297,13 @@ const Home = ({navigation}) => {
                                 />
                             </Stack>
                             <Stack alignItems="center">
-                                <Button width="90%">Join Now</Button>
+                                <Button
+                                    width="90%"
+                                    onPress={() =>
+                                        navigation.navigate('ViewAll')
+                                    }>
+                                    Join Now
+                                </Button>
                             </Stack>
                             <Stack alignItems="center">
                                 <Text color="#6E7191">

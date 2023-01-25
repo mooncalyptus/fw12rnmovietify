@@ -1,176 +1,148 @@
-import React from 'react';
-import {View, Image, StyleSheet, ScrollView} from 'react-native';
-import {Button, Input, Text, Box} from 'native-base';
+import React, {useEffect} from 'react';
+import {View, StyleSheet, FlatList} from 'react-native';
+import {
+    Button,
+    Input,
+    Text,
+    Box,
+    Stack,
+    Select,
+    CheckIcon,
+    HStack,
+    VStack,
+    Image,
+} from 'native-base';
 import Icon from 'react-native-vector-icons/Feather';
 import Navbar from './navbar';
 import Footer from '../src/components/footer';
+import http from '../src/helpers/http';
+import MonthList from './MonthList';
 
 const ViewAll = ({navigation}) => {
+    const [sort, setSort] = React.useState('');
+    const [movies, setMovies] = React.useState([]);
+    const [search, setSearch] = React.useState([]);
+
+    const getAllMovies = async () => {
+        try {
+            const {data} = await http().get(`/movies?search=${search}`);
+            setMovies(data.result);
+        } catch (error) {
+            console.log(error.response);
+        }
+    };
+
+    React.useEffect(() => {
+        getAllMovies();
+    }, [search]);
     return (
-        <ScrollView>
-            <View>
-                <Navbar />
-                {/* Konten */}
-                <View style={{backgroundColor: '#F5F6F8'}}>
-                    <Text pl="18" fontSize="18" pt="5">
-                        List Movie
-                    </Text>
-                    <View
-                        style={{
-                            flexDirection: 'row',
-                            paddingLeft: 17,
-                            marginTop: 10,
-                        }}>
-                        <Input
-                            variant="rounded"
-                            w={{
-                                base: '30%',
-                                md: '25%',
-                            }}
-                            placeholder="Sort"
-                        />
-                        <View style={{width: '90%', marginLeft: 20}}>
-                            <Input
+        <FlatList
+            style={{flex: 1}}
+            ListHeaderComponent={
+                <>
+                    <Navbar />
+                    <Box>
+                        <Stack>
+                            <Text fontSize="18" fontWeight="semibold">
+                                List Movie
+                            </Text>
+                        </Stack>
+                        <VStack space="3" px="3">
+                            <Select
                                 variant="rounded"
-                                w={{
-                                    base: '50%',
-                                    md: '25%',
+                                selectedValue={sort}
+                                width="90%"
+                                accessibilityLabel="Choose Service"
+                                placeholder="Sort"
+                                _selectedItem={{
+                                    bg: 'teal.600',
+                                    endIcon: <CheckIcon size="5" />,
                                 }}
-                                placeholder="Search Movie Name"
+                                mt={1}
+                                onValueChange={itemValue => setSort(itemValue)}>
+                                <Select.Item label="Title" value="title" />
+                                <Select.Item
+                                    label="Created At"
+                                    value="createdAt"
+                                />
+                                <Select.Item
+                                    label="Updated At"
+                                    value="updatedAt"
+                                />
+                            </Select>
+                            <HStack space="3">
+                                <Input
+                                    variant="rounded"
+                                    placeholder="Search Movie Name"
+                                    width="90%"
+                                    // value={search}
+                                    onChangeText={e => setSearch(e)}
+                                />
+                                {/* <Button onPress={getAllMovies}>Search</Button> */}
+                            </HStack>
+                        </VStack>
+                        <Stack>
+                            <MonthList />
+                        </Stack>
+                        <Stack>
+                            <FlatList
+                                data={movies}
+                                keyExtractor={item => item.id}
+                                numColumns={2}
+                                key={item => item.id}
+                                renderItem={({item}) => {
+                                    return (
+                                        <Stack
+                                            flex="1"
+                                            direction="column"
+                                            space="2">
+                                            <Box
+                                                height="400px"
+                                                mt="2"
+                                                mx="3"
+                                                backgroundColor="white"
+                                                borderWidth="1"
+                                                borderColor="#dedede"
+                                                borderRadius="4"
+                                                px="3"
+                                                py="3">
+                                                <Image
+                                                    source={{
+                                                        uri: item.picture,
+                                                    }}
+                                                    width="160px"
+                                                    height="250px"
+                                                    resizeMode="contain"
+                                                    alt="Alternate Text"
+                                                />
+                                                <Stack alignItems="center">
+                                                    <Text>{item.title}</Text>
+                                                </Stack>
+                                                <Stack mt="5">
+                                                    <Button>Details</Button>
+                                                </Stack>
+                                            </Box>
+                                        </Stack>
+                                    );
+                                }}
                             />
-                        </View>
-                    </View>
-                    <Box mt="5">
-                        <ScrollView horizontal={true}>
-                            <View style={styles.upcomingMonth}>
-                                <Text>January</Text>
-                            </View>
-                            <View style={styles.upcomingMonth}>
-                                <Text>February</Text>
-                            </View>
-                            <View style={styles.upcomingMonth}>
-                                <Text>March</Text>
-                            </View>
-                            <View style={styles.upcomingMonth}>
-                                <Text>April</Text>
-                            </View>
-                            <View style={styles.upcomingMonth}>
-                                <Text>May</Text>
-                            </View>
-                            <View style={styles.upcomingMonth}>
-                                <Text>June</Text>
-                            </View>
-                            <View style={styles.upcomingMonth}>
-                                <Text>July</Text>
-                            </View>
-                            <View style={styles.upcomingMonth}>
-                                <Text>August</Text>
-                            </View>
-                            <View style={styles.upcomingMonth}>
-                                <Text>September</Text>
-                            </View>
-                            <View style={styles.upcomingMonth}>
-                                <Text>October</Text>
-                            </View>
-                            <View style={styles.upcomingMonth}>
-                                <Text>November</Text>
-                            </View>
-                            <View style={styles.upcomingMonth}>
-                                <Text>December</Text>
-                            </View>
-                        </ScrollView>
+                        </Stack>
+                        <Stack
+                            direction="row"
+                            space={3}
+                            alignItems="center"
+                            justifyContent="center"
+                            my="5">
+                            <Button>1</Button>
+                            <Button>2</Button>
+                            <Button>3</Button>
+                            <Button>4</Button>
+                        </Stack>
                     </Box>
-                    {/* Grid Film */}
-                    <View>
-                        <View style={{flexDirection: 'row'}}>
-                            <View style={styles.upcomingImage}>
-                                <Image
-                                    source={require('../src/images/upcoming-1.png')}
-                                />
-                                <Text
-                                    style={{textAlign: 'center', marginTop: 5}}>
-                                    Black Widow
-                                </Text>
-                                <Text>Action, Adventure, Sci-Fi</Text>
-                                <Button
-                                    style={{marginTop: 5}}
-                                    onPress={() =>
-                                        navigation.navigate('MovieDetails')
-                                    }>
-                                    Details
-                                </Button>
-                            </View>
-                            <View style={styles.upcomingImage}>
-                                <Image
-                                    source={require('../src/images/upcoming-2.png')}
-                                />
-                                <Text
-                                    style={{textAlign: 'center', marginTop: 5}}>
-                                    The Witches
-                                </Text>
-                                <Text>Adventure, Comedy, Family</Text>
-                                <Button
-                                    style={{marginTop: 5}}
-                                    onPress={() =>
-                                        navigation.navigate('MovieDetails')
-                                    }>
-                                    Details
-                                </Button>
-                            </View>
-                        </View>
-                        <View style={{flexDirection: 'row'}}>
-                            <View style={styles.upcomingImage}>
-                                <Image
-                                    source={require('../src/images/upcoming-1.png')}
-                                />
-                                <Text
-                                    style={{textAlign: 'center', marginTop: 5}}>
-                                    Black Widow
-                                </Text>
-                                <Text>Action, Adventure, Sci-Fi</Text>
-                                <Button style={{marginTop: 5}}>Details</Button>
-                            </View>
-                            <View style={styles.upcomingImage}>
-                                <Image
-                                    source={require('../src/images/upcoming-2.png')}
-                                />
-                                <Text
-                                    style={{textAlign: 'center', marginTop: 5}}>
-                                    The Witches
-                                </Text>
-                                <Text>Adventure, Comedy, Family</Text>
-                                <Button
-                                    style={{marginTop: 5}}
-                                    onPress={() =>
-                                        navigation.navigate('MovieDetails')
-                                    }>
-                                    Details
-                                </Button>
-                            </View>
-                        </View>
-                        <View
-                            style={{
-                                flexDirection: 'row',
-                                justifyContent: 'center',
-                                marginTop: 15,
-                            }}>
-                            <Button style={{width: '10%'}}>1</Button>
-                            <Button style={{width: '10%', marginLeft: 7}}>
-                                2
-                            </Button>
-                            <Button style={{width: '10%', marginLeft: 7}}>
-                                3
-                            </Button>
-                            <Button style={{width: '10%', marginLeft: 7}}>
-                                4
-                            </Button>
-                        </View>
-                    </View>
-                    {/* Grid Film End */}
-                </View>
-            </View>
-            <Footer />
-        </ScrollView>
+                    <Footer />
+                </>
+            }
+        />
     );
 };
 

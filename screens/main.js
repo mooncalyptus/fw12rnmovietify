@@ -5,7 +5,7 @@ import Home from './Home';
 import Register from './register';
 import ForgotPassword from './forgotPassword';
 import SetPassword from './setPassword';
-import ViewAll from './viewAll';
+import ViewAll from './ViewAll';
 import MovieDetails from './movieDetails';
 import OrderPage from './orderPage';
 import PaymentPage from './paymentPage';
