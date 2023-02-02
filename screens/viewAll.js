@@ -22,10 +22,18 @@ const ViewAll = ({navigation}) => {
     const [sort, setSort] = React.useState('');
     const [movies, setMovies] = React.useState([]);
     const [search, setSearch] = React.useState([]);
+    const [page, setPage] = React.useState(1);
+
+    // const handleChange = event => {
+    //     setSort(event.target.value);
+    //     console.log(event.target.value);
+    // };
 
     const getAllMovies = async () => {
         try {
-            const {data} = await http().get(`/movies?search=${search}`);
+            const {data} = await http().get(
+                `/movies?page=${page}&sort=${sort}&search=${search}`,
+            );
             setMovies(data.result);
         } catch (error) {
             console.log(error.response);
@@ -34,7 +42,7 @@ const ViewAll = ({navigation}) => {
 
     React.useEffect(() => {
         getAllMovies();
-    }, [search]);
+    }, [search, page, sort]);
     return (
         <FlatList
             style={{flex: 1}}
@@ -53,22 +61,15 @@ const ViewAll = ({navigation}) => {
                                 selectedValue={sort}
                                 width="90%"
                                 accessibilityLabel="Choose Service"
-                                placeholder="Sort"
+                                placeholder="Sort Movies"
                                 _selectedItem={{
                                     bg: 'teal.600',
                                     endIcon: <CheckIcon size="5" />,
                                 }}
                                 mt={1}
                                 onValueChange={itemValue => setSort(itemValue)}>
-                                <Select.Item label="Title" value="title" />
-                                <Select.Item
-                                    label="Created At"
-                                    value="createdAt"
-                                />
-                                <Select.Item
-                                    label="Updated At"
-                                    value="updatedAt"
-                                />
+                                <Select.Item label="A-Z" value="ASC" />
+                                <Select.Item label="Z-A" value="DESC" />
                             </Select>
                             <HStack space="3">
                                 <Input
@@ -78,7 +79,6 @@ const ViewAll = ({navigation}) => {
                                     // value={search}
                                     onChangeText={e => setSearch(e)}
                                 />
-                                {/* <Button onPress={getAllMovies}>Search</Button> */}
                             </HStack>
                         </VStack>
                         <Stack>
@@ -119,7 +119,18 @@ const ViewAll = ({navigation}) => {
                                                     <Text>{item.title}</Text>
                                                 </Stack>
                                                 <Stack mt="5">
-                                                    <Button>Details</Button>
+                                                    <Button
+                                                        onPress={() =>
+                                                            navigation.navigate(
+                                                                'MovieDetails',
+                                                                {
+                                                                    id_movie:
+                                                                        item.id,
+                                                                },
+                                                            )
+                                                        }>
+                                                        Details
+                                                    </Button>
                                                 </Stack>
                                             </Box>
                                         </Stack>
@@ -133,8 +144,8 @@ const ViewAll = ({navigation}) => {
                             alignItems="center"
                             justifyContent="center"
                             my="5">
-                            <Button>1</Button>
-                            <Button>2</Button>
+                            <Button onPress={() => setPage(page - 1)}>1</Button>
+                            <Button onPress={() => setPage(page + 1)}>2</Button>
                             <Button>3</Button>
                             <Button>4</Button>
                         </Stack>

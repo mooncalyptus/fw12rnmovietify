@@ -1,15 +1,36 @@
-import React from 'react';
-import {Text, Image, StyleSheet, ScrollView} from 'react-native';
-import {Button, Select, CheckIcon, View, Stack, Box} from 'native-base';
+import React, {useEffect} from 'react';
+import {Text, StyleSheet, ScrollView} from 'react-native';
+import {Button, Select, CheckIcon, View, Stack, Box, Image} from 'native-base';
 import Icon from 'react-native-vector-icons/Feather';
 import Navbar from './navbar';
 import Footer from '../src/components/footer';
+import {useRoute} from '@react-navigation/native';
 import DatePicker from 'react-native-date-picker';
+import http from '../src/helpers/http';
+import CalendarPicker from 'react-native-calendar-picker';
 
-const MovieDetails = ({navigation}) => {
+const MovieDetails = ({id_movie}) => {
     const [service, setService] = React.useState('');
+    const [movieDetails, setMovieDetails] = React.useState({});
     const [date, setDate] = React.useState(new Date());
     const [open, setOpen] = React.useState(false);
+    const route = useRoute();
+    const getId = route.params.id_movie;
+    console.log(getId);
+
+    React.useEffect(() => {
+        getMovieDetails();
+    }, [getId]);
+
+    console.log(movieDetails);
+    const getMovieDetails = async () => {
+        try {
+            const {data} = await http().get('/movies/' + getId);
+            setMovieDetails(data.results);
+        } catch (error) {
+            console.log(error.response);
+        }
+    };
 
     return (
         <ScrollView>
@@ -18,17 +39,23 @@ const MovieDetails = ({navigation}) => {
             <View backgroundColor="white" px="5">
                 <View style={styles.imageMovies}>
                     <View style={styles.moviesBorder}>
-                        <Image source={require('../src/images/now-1.png')} />
+                        <Image
+                            source={{uri: movieDetails?.picture}}
+                            width="160px"
+                            height="250px"
+                            resizeMode="contain"
+                            alt="Alternate Text"
+                        />
                     </View>
                 </View>
                 <Stack justifyContent="center" alignContent="center" space={3}>
                     <View style={{marginTop: 35}}>
                         <Stack space={2}>
                             <Text style={{textAlign: 'center'}}>
-                                Spider-Man: Homecoming
+                                {movieDetails?.title};
                             </Text>
                             <Text style={{textAlign: 'center'}}>
-                                Adventure, Action, Sci-Fi
+                                {movieDetails?.genre}
                             </Text>
                         </Stack>
                     </View>
@@ -36,39 +63,27 @@ const MovieDetails = ({navigation}) => {
                         <Stack space={2}>
                             <Stack>
                                 <Text>Release date</Text>
-                                <Text>June 28, 2017</Text>
+                                <Text>{movieDetails?.releaseDate}</Text>
                             </Stack>
                             <Stack>
                                 <Text>Duration</Text>
-                                <Text>2 hrs 13 min</Text>
+                                <Text>{movieDetails?.duration}</Text>
                             </Stack>
                         </Stack>
                         <Stack space={2}>
                             <Stack>
                                 <Text>Directed by</Text>
-                                <Text>Jon Watss</Text>
+                                <Text>{movieDetails?.director}</Text>
                             </Stack>
                             <Stack pr="5">
                                 <Text>Casts</Text>
-                                <Text>
-                                    Tom Holland, Robert Downey Jr., etc.
-                                </Text>
+                                <Text>{movieDetails?.casts}</Text>
                             </Stack>
                         </Stack>
                     </Stack>
                     <View>
                         <Text>Synopsis</Text>
-                        <Text>
-                            Thrilled by his experience with the Avengers, Peter
-                            returns home, where he lives with his Aunt May,
-                            under the watchful eye of his new mentor Tony Stark,
-                            Peter tries to fall back into his normal daily
-                            routine - distracted by thoughts of proving himself
-                            to be more than just your friendly neighborhood
-                            Spider-Man - but when the Vulture emerges as a new
-                            villain, everything that Peter holds most important
-                            will be threatened.
-                        </Text>
+                        <Text>{movieDetails?.synopsis}</Text>
                     </View>
                 </Stack>
                 {/* Show times and tickets */}
@@ -76,7 +91,7 @@ const MovieDetails = ({navigation}) => {
                 <Stack space={3} mt="5">
                     <Text>Showtimes and Tickets</Text>
                     <View>
-                        <Select
+                        {/* <Select
                             selectedValue={service}
                             minWidth="200"
                             accessibilityLabel="Choose Service"
@@ -95,7 +110,10 @@ const MovieDetails = ({navigation}) => {
                             <Select.Item label="2023/01/14" value="14" />
                             <Select.Item label="2023/01/15" value="15" />
                             <Select.Item label="2023/01/16" value="16" />
-                        </Select>
+                        </Select> */}
+                        <CalendarPicker
+                            onDateChange={value => console.log(value)}
+                        />
                     </View>
                     <View>
                         <Select

@@ -45,12 +45,13 @@ const Home = ({navigation}) => {
     const getNowShowing = async () => {
         try {
             const {data} = await http().get('/movies/nowShowing');
-            setNowShowing(data.results);
+            console.log(data);
+            setNowShowing(data?.results);
         } catch (error) {
             console.log(error.response);
         }
     };
-    // console.log(nowShowing[0].picture);
+    console.log(nowShowing[0]);
     React.useEffect(() => {
         getUpcoming();
         getNowShowing();
@@ -58,7 +59,7 @@ const Home = ({navigation}) => {
     return (
         <FlatList
             style={{flex: 1}}
-            data={upcoming}
+            // data={upcoming}
             ListHeaderComponent={
                 <>
                     <Navbar />

@@ -6,8 +6,10 @@ const http = token => {
         headers.Authorization = 'Bearer ' + token;
     }
 
+    // console.log('masuk');
     const instance = axios.create({
-        baseURL: 'http://192.168.100.177:5555/',
+        // baseURL: 'http://192.168.100.185:5555',
+        baseURL: 'https://fw12-backend-three.vercel.app',
         headers,
     });
     return instance;
