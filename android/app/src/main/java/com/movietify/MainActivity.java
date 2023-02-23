@@ -1,4 +1,4 @@
-package com.fw12rnmovietify;
+package com.movietify;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
@@ -13,7 +13,7 @@ public class MainActivity extends ReactActivity {
    */
   @Override
   protected String getMainComponentName() {
-    return "fw12rnmovietify";
+    return "movietify";
   }
 
   @Override

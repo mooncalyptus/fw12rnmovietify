@@ -1,4 +1,4 @@
-package com.fw12rnmovietify.newarchitecture;
+package com.movietify.newarchitecture;
 
 import android.app.Application;
 import androidx.annotation.NonNull;
@@ -19,9 +19,9 @@ import com.facebook.react.fabric.CoreComponentsRegistry;
 import com.facebook.react.fabric.FabricJSIModuleProvider;
 import com.facebook.react.fabric.ReactNativeConfig;
 import com.facebook.react.uimanager.ViewManagerRegistry;
-import com.fw12rnmovietify.BuildConfig;
-import com.fw12rnmovietify.newarchitecture.components.MainComponentsRegistry;
-import com.fw12rnmovietify.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
+import com.movietify.BuildConfig;
+import com.movietify.newarchitecture.components.MainComponentsRegistry;
+import com.movietify.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
 import java.util.ArrayList;
 import java.util.List;
 
