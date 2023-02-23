@@ -18,7 +18,7 @@ const auth = createSlice({
             state.token = null;
         },
     },
-    extraReducers: (build) => {},
+    extraReducers: build => {},
 });
 
 // export const {login: loginAction, logout: logoutAction} = auth.actions;

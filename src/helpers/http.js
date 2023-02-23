@@ -8,8 +8,8 @@ const http = token => {
 
     // console.log('masuk');
     const instance = axios.create({
-        // baseURL: 'http://192.168.100.185:5555',
-        baseURL: 'https://fw12-backend-three.vercel.app',
+        baseURL: 'http://192.168.100.195:5555',
+        // baseURL: 'https://fw12-backend-three.vercel.app',
         headers,
     });
     return instance;

@@ -73,7 +73,6 @@ const Profile = () => {
         });
     }, [getProfile]);
 
-
     const updateProfile = async value => {
         try {
             const {firstName, lastName, phoneNumber, email} = value;
@@ -311,7 +310,7 @@ const Profile = () => {
                                                 variant="outline"
                                                 placeholder="First Name"
                                                 onChangeText={handleChange(
-                                                    'firstName'
+                                                    'firstName',
                                                 )}
                                                 onBlur={handleBlur('firstName')}
                                                 value={values.firstName}

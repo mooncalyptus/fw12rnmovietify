@@ -9,37 +9,43 @@ import {
     Box,
     Image,
     Text,
+    Pressable,
+    HStack,
 } from 'native-base';
 import Icon from 'react-native-vector-icons/Feather';
 import Navbar from './navbar';
 import Footer from '../src/components/footer';
 import {useRoute, useNavigation} from '@react-navigation/native';
-import DatePicker from 'react-native-date-picker';
+import {useDispatch} from 'react-redux';
 import http from '../src/helpers/http';
+import {chooseMovie as chooseMovieActions} from '../src/redux/reducers/transactions';
+import moment from 'moment';
 import CalendarPicker from 'react-native-calendar-picker';
 
 const MovieDetails = ({id_movie}) => {
-    const [service, setService] = React.useState('');
     const [movieDetails, setMovieDetails] = React.useState({});
-    const [detailsCinema, setDetailsCinema] = React.useState([]);
-    const [date, setDate] = React.useState(new Date());
-    const [open, setOpen] = React.useState(false);
+    const [date, setDate] = React.useState('');
+    const [city, setCity] = React.useState('');
+    const [cityList, setCityList] = React.useState([]);
+    const [selectedCinema, setSelectedCinema] = React.useState(null);
+    const [selectedTime, setSelectedTime] = React.useState('');
     const navigation = useNavigation();
     const route = useRoute();
+    const dispatch = useDispatch();
     const getId = route.params.id_movie;
     // console.log(getId);
 
     React.useEffect(() => {
         getMovieDetails();
-        getDetailsCinema();
     }, [getId]);
 
-    const onChange = (event, selectedDate) => {
-        const currentDate = selectedDate;
-        setDate(currentDate);
-    };
+    // const onChange = (event, selectedDate) => {
+    //     const currentDate = selectedDate;
+    //     setDate(currentDate);
+    // };
 
     // console.log(movieDetails);
+    console.log(date, city, selectedTime);
     const getMovieDetails = async () => {
         try {
             const {data} = await http().get('/movies/' + getId);
@@ -49,15 +55,42 @@ const MovieDetails = ({id_movie}) => {
         }
     };
 
-    const getDetailsCinema = async () => {
+    const getCinemas = async () => {
         try {
-            const {data} = await http().get('/movies/' + getId);
-            setDetailsCinema(data.results);
-        } catch (error) {
-            console.log(error);
+            const {data} = await http().get(
+                `/cinemas/${getId}/selectCinemas?date=${date}&city=${city}`,
+            );
+            setCityList(data.result);
+        } catch (err) {
+            if (err) {
+                throw err;
+            }
         }
     };
 
+    const chooseTime = (time, cinema) => {
+        setSelectedTime(time);
+        setSelectedCinema(cinema);
+    };
+
+    const book = (price, cinemaName) => {
+        dispatch(
+            chooseMovieActions({
+                movieId: getId,
+                cinemaId: selectedCinema,
+                bookingDate: date,
+                bookingTime: selectedTime,
+                movieTitle: movieDetails?.title,
+                price,
+                cinemaName,
+                // price: cinema.price,
+            }),
+        );
+        navigation.navigate('OrderPage');
+    };
+    React.useEffect(() => {
+        getCinemas();
+    }, [city, date]);
     return (
         <FlatList
             style={{flex: 1}}
@@ -94,11 +127,28 @@ const MovieDetails = ({id_movie}) => {
                                 <Stack space={2}>
                                     <Stack>
                                         <Text>Release date</Text>
-                                        <Text>{movieDetails?.releaseDate}</Text>
+                                        <Text>
+                                            {moment(
+                                                movieDetails?.releaseDate,
+                                            ).format('LL')}
+                                        </Text>
                                     </Stack>
                                     <Stack>
                                         <Text>Duration</Text>
-                                        <Text>{movieDetails?.duration}</Text>
+                                        <Text>
+                                            {
+                                                String(
+                                                    movieDetails?.duration,
+                                                ).split(':')[0]
+                                            }{' '}
+                                            Hours{' '}
+                                            {
+                                                String(
+                                                    movieDetails?.duration,
+                                                ).split(':')[1]
+                                            }{' '}
+                                            minutes
+                                        </Text>
                                     </Stack>
                                 </Stack>
                                 <Stack space={2}>
@@ -122,19 +172,17 @@ const MovieDetails = ({id_movie}) => {
                         <Stack space={3} mt="5">
                             <Text>Showtimes and Tickets</Text>
                             <View>
-                                {/* <CalendarPicker
-                                    onDateChange={value => console.log(value)}
-                                /> */}
-                                <DatePicker
-                                    date={date}
-                                    onDateChange={setDate}
+                                <CalendarPicker
+                                    onDateChange={value => {
+                                        setDate(value.format('YYYY-MM-DD'));
+                                    }}
                                 />
                             </View>
                             <View>
                                 <Select
-                                    selectedValue={service}
+                                    selectedValue={city}
                                     minWidth="200"
-                                    accessibilityLabel="Choose Service"
+                                    accessibilityLabel="Set a city"
                                     placeholder="Set a city"
                                     InputLeftElement={
                                         <Icon name="map-pin" size={25} />
@@ -145,31 +193,82 @@ const MovieDetails = ({id_movie}) => {
                                     }}
                                     mt={1}
                                     onValueChange={itemValue =>
-                                        setService(itemValue)
+                                        setCity(itemValue)
                                     }>
-                                    <Select.Item label="Jakarta" value="ux" />
                                     <Select.Item
-                                        label="Web Development"
-                                        value="web"
+                                        label="Jakarta"
+                                        value="Jakarta"
                                     />
-                                    <Select.Item
-                                        label="Cross Platform Development"
-                                        value="cross"
-                                    />
-                                    <Select.Item
-                                        label="UI Designing"
-                                        value="ui"
-                                    />
-                                    <Select.Item
-                                        label="Backend Development"
-                                        value="backend"
-                                    />
+                                    <Select.Item label="Depok" value="Depok" />
                                 </Select>
                             </View>
                         </Stack>
 
                         {/* Konten flatlist cinema */}
-                        <View style={styles.boxCinemas}>
+                        <View>
+                            {cityList.map(cinema => {
+                                return (
+                                    <>
+                                        <View style={styles.boxCinemas}>
+                                            <Text key={cinema.id}>
+                                                {cinema.name}
+                                            </Text>
+                                            <Text px="5">{cinema.address}</Text>
+                                            <View
+                                                style={{
+                                                    borderBottomColor: 'black',
+                                                    borderBottomWidth:
+                                                        StyleSheet.hairlineWidth,
+                                                }}
+                                            />
+                                            <Stack space={2}>
+                                                {cinema.time.map(time => {
+                                                    return (
+                                                        <View>
+                                                            <Button
+                                                                onPress={() =>
+                                                                    chooseTime(
+                                                                        time,
+                                                                        cinema.cinemaId,
+                                                                    )
+                                                                }
+                                                                style={{
+                                                                    backgroundColor:
+                                                                        cinema.cinemaId ===
+                                                                            selectedCinema &&
+                                                                        time ===
+                                                                            selectedTime
+                                                                            ? '#62B6B7'
+                                                                            : 'white',
+                                                                }}>
+                                                                <Text>
+                                                                    {time}
+                                                                </Text>
+                                                            </Button>
+                                                        </View>
+                                                    );
+                                                })}
+                                            </Stack>
+                                            <HStack space={10} marginTop="15">
+                                                <Text>Price</Text>
+                                                <Text>{cinema.price}</Text>
+                                            </HStack>
+                                            <Button
+                                                marginTop={15}
+                                                onPress={() =>
+                                                    book(
+                                                        cinema.price,
+                                                        cinema.name,
+                                                    )
+                                                }>
+                                                Book Now
+                                            </Button>
+                                        </View>
+                                    </>
+                                );
+                            })}
+                        </View>
+                        {/* <View style={styles.boxCinemas}>
                             <View>
                                 <Stack space={3}>
                                     <View
@@ -237,7 +336,7 @@ const MovieDetails = ({id_movie}) => {
                                     </View>
                                 </Stack>
                             </View>
-                        </View>
+                        </View> */}
                     </View>
                     <Footer />
                 </>
@@ -271,6 +370,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingTop: 10,
         paddingBottom: 15,
+        marginBottom: 30,
     },
 });
 export default MovieDetails;
