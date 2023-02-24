@@ -1,4 +1,6 @@
 import React from 'react';
+import {useSelector} from 'react-redux';
+import {useNavigation} from '@react-navigation/native';
 import {StyleSheet, TouchableOpacity} from 'react-native';
 import {
     Button,
@@ -21,7 +23,11 @@ import Icon from 'react-native-vector-icons/Feather';
 import Navbar from './navbar';
 import Footer from '../src/components/footer';
 
-const OrderHistory = ({navigation}) => {
+const OrderHistory = () => {
+    const navigation = useNavigation();
+    const {cinemaName, bookingDate, bookingTime, movieTitle} = useSelector(
+        state => state.transactions,
+    );
     return (
         <ScrollView>
             <Navbar />
@@ -55,41 +61,18 @@ const OrderHistory = ({navigation}) => {
                     py="10"
                     borderRadius="md">
                     <Stack pl="5" mb={3}>
-                        <Image
-                            source={require('../src/images/footer-2.png')}
-                            style={{width: '50%', height: 25}}
-                            alt="footer"
-                        />
+                        <Text>{cinemaName}</Text>
                     </Stack>
                     <Stack px="5" space={3}>
-                        <Text>Tuesday, 07 July 2020 - 04:30pm</Text>
-                        <Text>Spider-Man: Homecoming</Text>
+                        <Text>
+                            {bookingDate} - {bookingTime}
+                        </Text>
+                        <Text>{movieTitle}</Text>
                         <Divider my="2" />
                         <Button
                             onPress={() => navigation.navigate('TicketResult')}>
                             Ticket in active
                         </Button>
-                    </Stack>
-                </Box>
-
-                <Box
-                    backgroundColor="white"
-                    mt="32px"
-                    mb="32px"
-                    py="10"
-                    borderRadius="md">
-                    <Stack pl="5" mb={3}>
-                        <Image
-                            source={require('../src/images/footer-1.png')}
-                            style={{width: 70, height: 25}}
-                            alt="footer"
-                        />
-                    </Stack>
-                    <Stack px="5" space={3}>
-                        <Text>Monday, 14 June 2020 - 02:00pm</Text>
-                        <Text>Avengers: End Game</Text>
-                        <Divider my="2" />
-                        <Button backgroundColor="#6E7191">Ticket Used</Button>
                     </Stack>
                 </Box>
             </Box>
