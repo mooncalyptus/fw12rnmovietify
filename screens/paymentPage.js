@@ -1,4 +1,10 @@
 import React from 'react';
+import {useDispatch, useSelector} from 'react-redux';
+import {useNavigation} from '@react-navigation/native';
+import {createTransaction as trxAction} from '../src/redux/actions/transactions';
+import http from '../src/helpers/http';
+import {Formik} from 'formik';
+import * as Yup from 'yup';
 import {
     Button,
     Input,
@@ -15,11 +21,43 @@ import {
     IconButton,
     CloseIcon,
 } from 'native-base';
+import {TextInput} from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import Navbar from './navbar';
 import Footer from '../src/components/footer';
 
-const PaymentPage = ({navigation}) => {
+const PaymentPage = () => {
+    const navigation = useNavigation();
+    const dispatch = useDispatch();
+    const token = useSelector(state => state.auth.token);
+    const data = useSelector(state => state.transactions);
+    const [paymentList, setPaymentList] = React.useState([]);
+    const [form, setForm] = React.useState({
+        fullName: '',
+        email: '',
+        phoneNumber: '',
+        paymentMethodId: '',
+    });
+    const handleInputChange = (inputName, inputValue) => {
+        setForm({
+            ...form,
+            [inputName]: inputValue,
+        });
+    };
+    React.useEffect(() => {
+        getPaymentMethod();
+    }, []);
+    const getPaymentMethod = async () => {
+        const {data} = await http().get('/payment');
+        setPaymentList(data.result);
+    };
+    React.useEffect(() => {
+        console.log(form);
+    }, [form]);
+    const pay = () => {
+        dispatch(trxAction({...data, ...form, token}));
+        navigation.navigate('OrderHistory');
+    };
     return (
         <>
             <ScrollView>
@@ -35,99 +73,24 @@ const PaymentPage = ({navigation}) => {
                         alignItems="center"
                         borderRadius="md">
                         <Stack direction="column" space={3} my={5}>
-                            <Stack direction="row" space={4}>
-                                <Button
-                                    backgroundColor="white"
-                                    width="80px"
-                                    height="32px"
-                                    borderColor="#DEDEDE"
-                                    borderRadius="md"
-                                    borderWidth="1"
-                                    justifyContent="center"
-                                    alignItems="center">
-                                    <Image
-                                        source={require('../src/images/gpay.png')}
-                                        style={{width: 38, height: 13}}
-                                        alt="gpay"
-                                    />
-                                </Button>
-                                <Button
-                                    backgroundColor="white"
-                                    width="80px"
-                                    height="32px"
-                                    borderColor="#DEDEDE"
-                                    borderRadius="md"
-                                    borderWidth="1"
-                                    justifyContent="center"
-                                    alignItems="center">
-                                    <Image
-                                        source={require('../src/images/visa.png')}
-                                        style={{width: 38, height: 13}}
-                                        alt="visa"
-                                    />
-                                </Button>
-                                <Button
-                                    backgroundColor="white"
-                                    width="80px"
-                                    height="32px"
-                                    borderColor="#DEDEDE"
-                                    borderRadius="md"
-                                    borderWidth="1"
-                                    justifyContent="center"
-                                    alignItems="center">
-                                    <Image
-                                        source={require('../src/images/gopay.png')}
-                                        style={{width: 38, height: 13}}
-                                        alt="gopay"
-                                    />
-                                </Button>
-                            </Stack>
-                            <Stack direction="row" space={4}>
-                                <Button
-                                    backgroundColor="white"
-                                    width="80px"
-                                    height="32px"
-                                    borderColor="#DEDEDE"
-                                    borderRadius="md"
-                                    borderWidth="1"
-                                    justifyContent="center"
-                                    alignItems="center">
-                                    <Image
-                                        source={require('../src/images/paypal.png')}
-                                        style={{width: 20, height: 13}}
-                                        alt="paypal"
-                                    />
-                                </Button>
-                                <Button
-                                    backgroundColor="white"
-                                    width="80px"
-                                    height="32px"
-                                    borderColor="#DEDEDE"
-                                    borderRadius="md"
-                                    borderWidth="1"
-                                    justifyContent="center"
-                                    alignItems="center">
-                                    <Image
-                                        source={require('../src/images/ovo.png')}
-                                        style={{width: 38, height: 13}}
-                                        alt="ovo"
-                                    />
-                                </Button>
-                                <Button
-                                    backgroundColor="white"
-                                    width="80px"
-                                    height="32px"
-                                    borderColor="#DEDEDE"
-                                    borderRadius="md"
-                                    borderWidth="1"
-                                    justifyContent="center"
-                                    alignItems="center">
-                                    <Image
-                                        source={require('../src/images/dana.png')}
-                                        style={{width: 45, height: 13}}
-                                        alt="dana"
-                                    />
-                                </Button>
+                            <Stack direction="column" space={2}>
+                                {paymentList.map(item => (
+                                    <Button
+                                        style={{
+                                            backgroundColor:
+                                                form.paymentMethodId === item.id
+                                                    ? '#62B6B7'
+                                                    : '#97DECE',
+                                        }}
+                                        onPress={() =>
+                                            setForm({
+                                                ...form,
+                                                paymentMethodId: item.id,
+                                            })
+                                        }>
+                                        {item.name}
+                                    </Button>
+                                ))}
                             </Stack>
                         </Stack>
                         <Stack
@@ -163,18 +126,37 @@ const PaymentPage = ({navigation}) => {
                         <FormControl>
                             <Stack space={5} px="10" my={7}>
                                 <FormControl.Label>Full name</FormControl.Label>
-                                <Input
+                                <TextInput
+                                    placeholder="Full Name"
+                                    onChangeText={text =>
+                                        handleInputChange('fullName', text)
+                                    }
+                                    value={form.fullName}
+                                />
+                                {/* <Input
                                     variant="outline"
                                     placeholder="Full Name"
-                                />
+                                    name="fullName"
+                                    // value={form}
+                                    onChangeText={value => setForm(value)}
+                                /> */}
                                 <FormControl.Label>Email</FormControl.Label>
-                                <Input variant="outline" placeholder="Email" />
+                                <TextInput
+                                    placeholder="Email"
+                                    onChangeText={text =>
+                                        handleInputChange('email', text)
+                                    }
+                                    value={form.email}
+                                />
                                 <FormControl.Label>
                                     Phone Number
                                 </FormControl.Label>
-                                <Input
-                                    variant="outline"
+                                <TextInput
                                     placeholder="Phone Number"
+                                    onChangeText={text =>
+                                        handleInputChange('phoneNumber', text)
+                                    }
+                                    value={form.phoneNumber}
                                 />
                                 <Alert
                                     maxW="400"
@@ -215,9 +197,7 @@ const PaymentPage = ({navigation}) => {
                         </FormControl>
                     </Box>
                     <Box alignItems="center" my="50">
-                        <Button
-                            width="70%"
-                            onPress={() => navigation.navigate('Profile')}>
+                        <Button width="70%" onPress={pay}>
                             Pay your Order
                         </Button>
                     </Box>
